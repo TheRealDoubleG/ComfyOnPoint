@@ -1,5 +1,12 @@
 OnPoint Changelog
 
+Version 1.5 - Beta - 26.09.2026
+- Info tab now detects and shows the real running WoW client version, build and Interface.
+- Shows whether the client's Interface matches OnPoint's tested Interface.
+- GitHub now checks for newer WoW Forever builds automatically and opens a compatibility issue when needed.
+- GitHub documentation now lists the mouse-following tooltip as the first/main feature.
+- Interface versions are not blindly auto-approved; a quick in-game test is required before changing the TOC.
+
 Version 1.4 - Beta - 26.09.2026
 - Corrected the public author name to TheRealDoubleG everywhere.
 - Added the official GitHub project URL to addon metadata, the Info tab and README.
