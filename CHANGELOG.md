@@ -1,5 +1,12 @@
 # OnPoint Changelog
 
+## 1.5 Beta - 26.09.2026
+- Added live client version, build and Interface detection to the Info tab.
+- Added a clear compatibility status comparing the running client Interface with OnPoint's tested Interface.
+- Added scheduled GitHub monitoring for new WoW Forever builds; a compatibility issue is created when a newer build or Interface is detected.
+- Reworked the GitHub README so the original/main feature — keeping the tooltip at the mouse cursor — is listed first.
+- Kept Interface updates test-gated instead of blindly marking untested game versions as compatible.
+
 ## 1.4 Beta - 26.09.2026
 - Corrected the public author name to `TheRealDoubleG` everywhere.
 - Added the official GitHub project URL to addon metadata, the Info tab and README.
