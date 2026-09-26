@@ -27,7 +27,11 @@ jobs:
             curl -fsSL --retry 3 --connect-timeout 15 "$1" 2>/dev/null               | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+'               || true
           }
 
-          versions="$(fetch_versions 'https://wow-forever.gg/changelog/latest/')"
+          # The news index currently exposes the newest build reliably.
+          versions="$(fetch_versions 'https://wow-forever.gg/news/')"
+          if [ -z "$versions" ]; then
+            versions="$(fetch_versions 'https://wow-forever.gg/changelog/latest/')"
+          fi
           if [ -z "$versions" ]; then
             versions="$(fetch_versions 'https://wow-forever.gg/')"
           fi
