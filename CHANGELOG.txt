@@ -1,0 +1,33 @@
+OnPoint Changelog
+
+Version 1.4 - Beta - 26.09.2026
+- Corrected the public author name to TheRealDoubleG everywhere.
+- Added the official GitHub project URL to addon metadata, the Info tab and README.
+- Prepared the source tree for the public GitHub repository.
+
+1.3 Beta - 26.09.2026
+- Optional pet/minion owner display.
+- Pet mode added to the live preview.
+- Minimap button now sits outside the minimap edge and its border is centered.
+- Tooltip window scale option kept and clarified (50-150%).
+- Existing custom profiles gain the new owner-display option automatically.
+
+================
+
+Version 1.2 - Beta - 26.09.2026
+--------------------------------
++ German/English UI depending on the WoW client language.
++ Cursor anchor selection: top right, top left, bottom right, bottom left.
++ Tooltip scale setting.
++ Optional "Faction:" prefix; can show only Alliance/Horde.
++ Optional "Range:" prefix; can show only In Range/Out of Range.
+* Fixed action-bar spell/item tooltips jumping back to Blizzard's default position.
+* Original Blizzard spell/item/action tooltip information remains untouched.
+
+Version 1.1 - Beta - 26.09.2026
+--------------------------------
++ Expanded Info tab and community documentation.
+
+Version 1.0 - 26.09.2026
+-------------------------
++ First named release.
