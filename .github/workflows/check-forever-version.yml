@@ -1,0 +1,111 @@
+name: Check WoW Forever version
+
+on:
+  schedule:
+    - cron: "17 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check-version:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout OnPoint
+        uses: actions/checkout@v4
+
+      - name: Detect latest WoW Forever build
+        id: forever
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          fetch_versions() {
+            curl -fsSL --retry 3 --connect-timeout 15 "$1" 2>/dev/null               | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+'               || true
+          }
+
+          versions="$(fetch_versions 'https://wow-forever.gg/changelog/latest/')"
+          if [ -z "$versions" ]; then
+            versions="$(fetch_versions 'https://wow-forever.gg/')"
+          fi
+
+          latest="$(printf '%s\n' "$versions" | sort -V | tail -n 1)"
+
+          if [ -z "$latest" ]; then
+            echo "Could not detect a WoW Forever build."
+            exit 1
+          fi
+
+          game_version="${latest%.*}"
+          build="${latest##*.}"
+
+          IFS='.' read -r major minor patch <<< "$game_version"
+          derived_interface="$(printf '%d%02d%02d' "$major" "$minor" "$patch")"
+
+          target_interface="$(awk '/^## Interface:/ {print $3; exit}' OnPoint.toc)"
+          target_build="$(sed -n 's/.*OP.targetBuild = "\([0-9][0-9]*\)".*/\1/p' Core.lua | head -n 1)"
+
+          echo "latest=$latest" >> "$GITHUB_OUTPUT"
+          echo "game_version=$game_version" >> "$GITHUB_OUTPUT"
+          echo "build=$build" >> "$GITHUB_OUTPUT"
+          echo "derived_interface=$derived_interface" >> "$GITHUB_OUTPUT"
+          echo "target_interface=$target_interface" >> "$GITHUB_OUTPUT"
+          echo "target_build=$target_build" >> "$GITHUB_OUTPUT"
+
+          if [ "$build" != "$target_build" ] || [ "$derived_interface" != "$target_interface" ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+          echo "Detected: $latest / Interface $derived_interface"
+          echo "OnPoint target: Build $target_build / Interface $target_interface"
+
+      - name: Open compatibility issue
+        if: steps.forever.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          LATEST: ${{ steps.forever.outputs.latest }}
+          GAME_VERSION: ${{ steps.forever.outputs.game_version }}
+          BUILD: ${{ steps.forever.outputs.build }}
+          DETECTED_INTERFACE: ${{ steps.forever.outputs.derived_interface }}
+          TARGET_INTERFACE: ${{ steps.forever.outputs.target_interface }}
+          TARGET_BUILD: ${{ steps.forever.outputs.target_build }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          title="WoW Forever compatibility check: $LATEST"
+
+          if gh issue list --state open --search "\"$title\" in:title" --json title --jq '.[].title' | grep -Fxq "$title"; then
+            echo "Compatibility issue already exists."
+            exit 0
+          fi
+
+          body="$(cat <<EOF
+          A newer WoW Forever build or Interface was detected automatically.
+
+          ### Detected client
+          - Version: `$GAME_VERSION`
+          - Build: `$BUILD`
+          - Derived Interface: `$DETECTED_INTERFACE`
+
+          ### Current OnPoint target
+          - Build: `$TARGET_BUILD`
+          - Interface: `$TARGET_INTERFACE`
+
+          ### Before updating OnPoint
+          - [ ] Launch the new WoW Forever client.
+          - [ ] Confirm `GetBuildInfo()` / Interface in OnPoint's Info tab.
+          - [ ] Test cursor-following tooltips on units, items and action-bar spells.
+          - [ ] Test the minimap button, profiles, range status and health/resource bars.
+          - [ ] Only then update `## Interface:`, target build, addon version and changelog.
+
+          OnPoint intentionally does not mark an untested Interface as compatible automatically.
+          EOF
+          )"
+
+          gh issue create --title "$title" --body "$body"
