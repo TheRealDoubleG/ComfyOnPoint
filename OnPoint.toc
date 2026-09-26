@@ -1,9 +1,9 @@
 ## Interface: 16001
 ## Title: OnPoint
-## Notes: Blizzard-style mouseover tooltips with profiles, range state, unit details and optional health/resource bars for WoW Forever.
-## Notes-deDE: Anpassbarer Tooltip am Mauszeiger mit Profilen, Reichweitenstatus sowie optionalen Lebens- und Ressourcenbalken für WoW Forever.
+## Notes: Keeps the tooltip at the mouse cursor; adds profiles, range state, unit details and optional health/resource bars for WoW Forever.
+## Notes-deDE: Hält den Tooltip am Mauszeiger; ergänzt Profile, Reichweitenstatus sowie optionale Lebens- und Ressourcenbalken für WoW Forever.
 ## Author: TheRealDoubleG
-## Version: 1.4
+## Version: 1.5
 ## SavedVariables: OnPointDB
 ## X-Website: https://github.com/TheRealDoubleG/OnPoint
 ## IconTexture: Interface\Icons\INV_Misc_Spyglass_03
