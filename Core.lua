@@ -4,7 +4,7 @@ OnPoint = OnPoint or {}
 local OP = OnPoint
 
 OP.name = ADDON_NAME or "OnPoint"
-OP.version = "1.4"
+OP.version = "1.5"
 OP.buildDate = "26.09.2026"
 OP.status = "Beta"
 OP.gameVersion = "WoW Forever 1.60.1"
@@ -14,6 +14,23 @@ OP.author = "TheRealDoubleG"
 OP.discord = "the.real.double.g"
 OP.github = "https://github.com/TheRealDoubleG/OnPoint"
 OP.interface = 16001
+
+function OP:GetClientBuildInfo()
+    if type(GetBuildInfo) ~= "function" then
+        return "?", "?", "?", nil
+    end
+
+    local version, build, buildDate, interface = GetBuildInfo()
+    return tostring(version or "?"), tostring(build or "?"), tostring(buildDate or "?"), tonumber(interface)
+end
+
+function OP:GetCompatibilityStatus()
+    local _, _, _, clientInterface = self:GetClientBuildInfo()
+    if clientInterface and tonumber(clientInterface) == tonumber(self.interface) then
+        return true, self:T("COMPAT_MATCH")
+    end
+    return false, self:T("COMPAT_UPDATE_REQUIRED")
+end
 OP.colors = {
     gold = {1.00, 0.82, 0.00},
     green = {0.20, 1.00, 0.20},
