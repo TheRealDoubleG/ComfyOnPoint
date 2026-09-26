@@ -16,19 +16,20 @@ OnPoint is a lightweight Blizzard-style tooltip addon for World of Warcraft Fore
 - X/Y cursor offset and tooltip window scaling from 50% to 150%.
 - Background opacity, text opacity and optional tooltip border.
 - Keeps Blizzard's original spell/item/action tooltip information.
+- Context profiles for world, combat, battlegrounds, dungeons and raids.
+- Built-in presets: Minimal, Preferred and Complete.
+- Custom named profiles with duplicate/delete support.
 - Optional class colors for players when the client exposes the class.
-- Optional guild, faction, PvP status, creature type and pet/minion owner.
+- Optional guild, faction, PvP status and creature type.
 - Optional `Faction:` prefix. Disable it to show only `Alliance` / `Horde`.
 - Optional `Range:` prefix. Disable it to show only `In Range` / `Out of Range`.
 - Range check uses a known class spell and does not invent a result when the client cannot provide one safely.
 - Optional health and resource bars above or below the tooltip.
-- Context profiles for world, combat, battlegrounds, dungeons and raids.
-- Built-in presets: Minimal, Preferred and Complete.
-- Custom named profiles with duplicate/delete support.
 - Minimap button: left-click toggles OnPoint, right-click opens settings, drag to move when unlocked.
 - Live tooltip preview in the settings window.
 - Automatic German UI on a German client (`deDE`); English on other client locales.
 - Info tab shows the **currently running client version, build and interface** and whether the Interface version matches OnPoint's tested target.
+- Optional pet/minion owner display when the client can resolve the owner.
 - `/onpoint` and `/op` open the settings.
 - `/onpoint debug` prints compatibility information.
 
