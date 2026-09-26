@@ -585,20 +585,37 @@ function OP:InitializeOptions()
         return l, v
     end
 
-    InfoRow(self:T("INFO_VERSION"), OP.version or "1.4", -100)
+    local clientVersion, clientBuild, _, clientInterface = OP:GetClientBuildInfo()
+    local compatible, compatibilityText = OP:GetCompatibilityStatus()
+
+    InfoRow(self:T("INFO_VERSION"), OP.version or "1.5", -100)
     InfoRow(self:T("INFO_BUILD_DATE"), OP.buildDate or "26.09.2026", -122)
     InfoRow(self:T("INFO_STATUS"), OP.status or "Beta", -144)
-    InfoRow(self:T("INFO_COMPAT"), OP.gameVersion or "WoW Forever 1.60.1", -166)
-    InfoRow(self:T("INFO_INTERFACE_BUILD"), tostring(OP.interface or 16001) .. " / " .. tostring(OP.targetBuild or "70009"), -188)
-    InfoRow(self:T("INFO_AUTHOR"), OP.author or "TheRealDoubleG", -210)
+    InfoRow(
+        self:T("INFO_CLIENT"),
+        "WoW Forever " .. tostring(clientVersion) .. " / Build " .. tostring(clientBuild) .. " / Interface " .. tostring(clientInterface or "?"),
+        -166
+    )
+    InfoRow(
+        self:T("INFO_TESTED_TARGET"),
+        tostring(OP.gameVersion or "WoW Forever 1.60.1") .. " / Build " .. tostring(OP.targetBuild or "70009") .. " / Interface " .. tostring(OP.interface or 16001),
+        -188
+    )
+    local _, compatibilityValue = InfoRow(self:T("INFO_COMPAT_STATUS"), compatibilityText, -210)
+    if compatible then
+        compatibilityValue:SetTextColor(0.20, 1.00, 0.20)
+    else
+        compatibilityValue:SetTextColor(1.00, 0.35, 0.20)
+    end
+    InfoRow(self:T("INFO_AUTHOR"), OP.author or "TheRealDoubleG", -232)
 
     local discordLabel = infoBox:CreateFontString(nil, "ARTWORK", "GameFontNormal")
-    discordLabel:SetPoint("TOPLEFT", 28, -235)
+    discordLabel:SetPoint("TOPLEFT", 28, -257)
     discordLabel:SetText(self:T("INFO_DISCORD"))
 
     local discordBox = CreateFrame("EditBox", nil, infoBox, "InputBoxTemplate")
     discordBox:SetSize(275, 30)
-    discordBox:SetPoint("TOPLEFT", 180, -226)
+    discordBox:SetPoint("TOPLEFT", 180, -248)
     discordBox:SetAutoFocus(false)
     discordBox:SetText(OP.discord or "the.real.double.g")
     discordBox:SetCursorPosition(0)
@@ -613,18 +630,18 @@ function OP:InitializeOptions()
     end)
 
     local copyHint = infoBox:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")
-    copyHint:SetPoint("TOPLEFT", 470, -233)
+    copyHint:SetPoint("TOPLEFT", 470, -255)
     copyHint:SetWidth(165)
     copyHint:SetJustifyH("LEFT")
     copyHint:SetText(self:T("INFO_COPY"))
 
     local githubLabel = infoBox:CreateFontString(nil, "ARTWORK", "GameFontNormal")
-    githubLabel:SetPoint("TOPLEFT", 28, -270)
+    githubLabel:SetPoint("TOPLEFT", 28, -292)
     githubLabel:SetText(self:T("INFO_GITHUB") or "GitHub")
 
     local githubBox = CreateFrame("EditBox", nil, infoBox, "InputBoxTemplate")
     githubBox:SetSize(395, 30)
-    githubBox:SetPoint("TOPLEFT", 180, -261)
+    githubBox:SetPoint("TOPLEFT", 180, -283)
     githubBox:SetAutoFocus(false)
     githubBox:SetText(OP.github or "https://github.com/TheRealDoubleG/OnPoint")
     githubBox:SetCursorPosition(0)
@@ -638,16 +655,16 @@ function OP:InitializeOptions()
         end
     end)
 
-    InfoRow(self:T("INFO_COMMANDS"), "/onpoint  ·  /op", -306)
+    InfoRow(self:T("INFO_COMMANDS"), "/onpoint  ·  /op", -328)
 
     local uiNotice = infoBox:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")
-    uiNotice:SetPoint("TOPLEFT", 28, -342)
+    uiNotice:SetPoint("TOPLEFT", 28, -360)
     uiNotice:SetWidth(620)
     uiNotice:SetJustifyH("LEFT")
     uiNotice:SetText(self:T("INFO_NOTICE"))
 
     local copyright = infoBox:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")
-    copyright:SetPoint("TOPLEFT", 28, -396)
+    copyright:SetPoint("TOPLEFT", 28, -414)
     copyright:SetText("© 2026 TheRealDoubleG")
 
     local thanks = infoBox:CreateFontString(nil, "ARTWORK", "GameFontHighlight")
