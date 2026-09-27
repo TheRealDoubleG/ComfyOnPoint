@@ -1,5 +1,9 @@
 ComfyOnPoint Changelog
 
+Version 1.12 - Beta - 27.09.2026
+- Added reliable ComfyHub minimap bundling support.
+- The standalone minimap button hides while bundled and returns when bundling is disabled.
+
 Version 1.11 - Beta - 27.09.2026
 - Renamed OnPoint to ComfyOnPoint as part of the Comfy Suite.
 - Existing OnPointDB settings migrate automatically to ComfyOnPointDB.
