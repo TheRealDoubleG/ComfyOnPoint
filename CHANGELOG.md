@@ -1,5 +1,8 @@
 # OnPoint Changelog
 
+## 1.6 Beta - 27.09.2026
+- Fixed the minimap tracking-border anchor so the gold ring now sits correctly around the OnPoint icon instead of appearing detached.
+
 ## 1.5 Beta - 26.09.2026
 - Added live client version, build and Interface detection to the Info tab.
 - Added a clear compatibility status comparing the running client Interface with OnPoint's tested Interface.
