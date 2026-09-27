@@ -1,6 +1,6 @@
 # OnPoint
 
-**Version 1.9 — Beta**  
+**Version 1.10 — Beta**  
 **Tested target: WoW Forever 1.60.1 / Build 70009 / Interface 16001**  
 Author: **TheRealDoubleG**  
 Discord: **the.real.double.g**
@@ -66,7 +66,7 @@ OnPoint 1.9 is marked as **Beta** while compatibility is being tested against Wo
 
 # OnPoint – Deutsch
 
-**Version 1.9 — Beta**  
+**Version 1.10 — Beta**  
 **Getestetes Ziel: WoW Forever 1.60.1 / Build 70009 / Interface 16001**  
 Autor: **TheRealDoubleG**  
 Discord: **the.real.double.g**
@@ -105,3 +105,8 @@ kopieren. Danach muss folgende Datei existieren:
 `World of Warcraft\Interface\AddOns\OnPoint\OnPoint.toc`
 
 WoW anschließend komplett neu starten und OnPoint in der AddOn-Liste aktivieren.
+
+
+## Comfy Suite UI standard
+
+OnPoint follows the shared Comfy Suite menu and Info-tab standard: Blizzard-style movable settings window, top tab navigation, persistent window position, consistent Info layout, Comfy Suite badge, compatibility information, author/Discord/GitHub fields and matching footer styling.

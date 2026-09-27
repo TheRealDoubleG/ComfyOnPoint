@@ -1,5 +1,12 @@
 # OnPoint Changelog
 
+## 1.10 Beta - 27.09.2026
+- Adopted the shared Comfy Suite UI standard.
+- Added the Comfy Suite badge to the Info tab.
+- Added Comfy Suite metadata to the TOC so current and future suite tools can identify OnPoint as part of the family.
+- Standardized the Info-tab structure and family styling with ComfyBar, ComfyCC and ComfyHub.
+
+
 ## 1.9 Beta - 27.09.2026
 - Renamed the main enable setting from "Addon enabled" to "Enable OnPoint" for consistency with ComfyBar.
 - German client label is now "OnPoint aktivieren".
