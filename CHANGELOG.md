@@ -1,5 +1,12 @@
 # ComfyOnPoint Changelog
 
+## 1.14 Beta – 27.09.2026
+- Fixed duplicate creature-type text on NPC tooltips when Blizzard/WoW Forever already provides the same line.
+- ComfyOnPoint now scans the existing tooltip before appending its own creature-type line.
+- Tooltip-line matching ignores WoW color/texture markup and surrounding whitespace.
+- Bumped addon version to 1.14.
+
+
 ## 1.13 Beta – 27.09.2026
 - Added the suite-wide **Settings** tab immediately before Info.
 - Added independent per-character, account and named custom saved profiles in addition to ComfyOnPoint's existing gameplay-context tooltip profiles.
