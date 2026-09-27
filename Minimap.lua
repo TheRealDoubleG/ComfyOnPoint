@@ -1,4 +1,6 @@
-ComfyOnPoint = ComfyOnPoint or OnPoint or {}\nOnPoint = ComfyOnPoint -- legacy global alias for older integrations\nlocal OP = ComfyOnPoint
+ComfyOnPoint = ComfyOnPoint or OnPoint or {}
+OnPoint = ComfyOnPoint -- legacy global alias for older integrations
+local OP = ComfyOnPoint
 
 local function HubWantsBundled()
     local hub = rawget(_G, "ComfyHub")
@@ -136,4 +138,5 @@ function OP:InitializeMinimap()
     self.minimapButton = button
     self.minimapBundled = HubWantsBundled()
     self:UpdateMinimapPosition()
-    self:UpdateMinimapAppearance()\nend
+    self:UpdateMinimapAppearance()
+end
