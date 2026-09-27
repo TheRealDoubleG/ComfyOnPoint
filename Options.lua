@@ -1,5 +1,6 @@
-OnPoint = OnPoint or {}
-local OP = OnPoint
+ComfyOnPoint = ComfyOnPoint or OnPoint or {}
+OnPoint = ComfyOnPoint -- legacy global alias for older integrations
+local OP = ComfyOnPoint
 
 local selectedContext = "world"
 local previewType = "friendly"
@@ -31,7 +32,7 @@ end
 local sliderIndex = 0
 local function CreateSlider(parent, label, minValue, maxValue, step, x, y, getter, setter, formatter)
     sliderIndex = sliderIndex + 1
-    local name = "OnPointSlider" .. sliderIndex
+    local name = "ComfyOnPointSlider" .. sliderIndex
     local slider = CreateFrame("Slider", name, parent, "OptionsSliderTemplate")
     slider:SetPoint("TOPLEFT", x, y)
     slider:SetWidth(250)
@@ -304,7 +305,7 @@ end
 function OP:InitializeOptions()
     if self.optionsFrame then return end
 
-    local frame = CreateFrame("Frame", "OnPointOptions", UIParent, "BasicFrameTemplateWithInset")
+    local frame = CreateFrame("Frame", "ComfyOnPointOptions", UIParent, "BasicFrameTemplateWithInset")
     frame:SetSize(760, 620)
     local savedPos = self.db and self.db.optionsWindow or nil
     local point = savedPos and savedPos.point or "CENTER"
@@ -315,7 +316,7 @@ function OP:InitializeOptions()
     frame:SetFrameLevel(20)
     if frame.SetToplevel then frame:SetToplevel(true) end
     frame:Hide()
-    frame.TitleText:SetText("OnPoint")
+    frame.TitleText:SetText("ComfyOnPoint")
     frame:SetMovable(true)
     frame:EnableMouse(true)
     frame:RegisterForDrag("LeftButton")
@@ -609,7 +610,7 @@ function OP:InitializeOptions()
 
     local addonName = infoBox:CreateFontString(nil, "ARTWORK", "GameFontNormalHuge")
     addonName:SetPoint("TOPLEFT", 28, -26)
-    addonName:SetText("OnPoint")
+    addonName:SetText("ComfyOnPoint")
 
     local familyBadge = infoBox:CreateFontString(nil, "ARTWORK", "GameFontNormal")
     familyBadge:SetPoint("TOPRIGHT", -28, -30)
@@ -693,19 +694,19 @@ function OP:InitializeOptions()
     githubBox:SetSize(395, 30)
     githubBox:SetPoint("TOPLEFT", 180, -283)
     githubBox:SetAutoFocus(false)
-    githubBox:SetText(OP.github or "https://github.com/TheRealDoubleG/OnPoint")
+    githubBox:SetText(OP.github or "https://github.com/TheRealDoubleG/ComfyOnPoint")
     githubBox:SetCursorPosition(0)
     githubBox:SetScript("OnEscapePressed", function(self) self:ClearFocus() end)
     githubBox:SetScript("OnEnterPressed", function(self) self:HighlightText() end)
     githubBox:SetScript("OnEditFocusGained", function(self) self:HighlightText() end)
     githubBox:SetScript("OnTextChanged", function(self, userInput)
-        if userInput and self:GetText() ~= (OP.github or "https://github.com/TheRealDoubleG/OnPoint") then
-            self:SetText(OP.github or "https://github.com/TheRealDoubleG/OnPoint")
+        if userInput and self:GetText() ~= (OP.github or "https://github.com/TheRealDoubleG/ComfyOnPoint") then
+            self:SetText(OP.github or "https://github.com/TheRealDoubleG/ComfyOnPoint")
             self:HighlightText()
         end
     end)
 
-    InfoRow(self:T("INFO_COMMANDS"), "/onpoint  ·  /op", -328)
+    InfoRow(self:T("INFO_COMMANDS"), "/comfyonpoint  ·  /cop", -328)
 
     local uiNotice = infoBox:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")
     uiNotice:SetPoint("TOPLEFT", 28, -360)
@@ -734,14 +735,14 @@ function OP:InitializeOptions()
         local canvas = CreateFrame("Frame")
         local info = canvas:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge")
         info:SetPoint("TOPLEFT", 16, -16)
-        info:SetText("OnPoint")
+        info:SetText("ComfyOnPoint")
         local desc = canvas:CreateFontString(nil, "ARTWORK", "GameFontHighlight")
         desc:SetPoint("TOPLEFT", info, "BOTTOMLEFT", 0, -12)
         desc:SetWidth(520)
         desc:SetJustifyH("LEFT")
         desc:SetText(self:T("SETTINGS_DESC"))
         CreateButton(canvas, self:T("SETTINGS_OPEN"), 16, -90, 220, function() OP:ShowOptions() end)
-        local category = Settings.RegisterCanvasLayoutCategory(canvas, "OnPoint")
+        local category = Settings.RegisterCanvasLayoutCategory(canvas, "ComfyOnPoint")
         Settings.RegisterAddOnCategory(category)
         self.settingsCategory = category
     end

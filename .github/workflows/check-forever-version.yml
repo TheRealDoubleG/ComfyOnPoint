@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout OnPoint
+      - name: Checkout ComfyOnPoint
         uses: actions/checkout@v4
 
       - name: Detect latest WoW Forever build
@@ -49,7 +49,7 @@ jobs:
           IFS='.' read -r major minor patch <<< "$game_version"
           derived_interface="$(printf '%d%02d%02d' "$major" "$minor" "$patch")"
 
-          target_interface="$(awk '/^## Interface:/ {print $3; exit}' OnPoint.toc)"
+          target_interface="$(awk '/^## Interface:/ {print $3; exit}' ComfyOnPoint.toc)"
           target_build="$(sed -n 's/.*OP.targetBuild = "\([0-9][0-9]*\)".*/\1/p' Core.lua | head -n 1)"
 
           echo "latest=$latest" >> "$GITHUB_OUTPUT"
@@ -66,7 +66,7 @@ jobs:
           fi
 
           echo "Detected: $latest / Interface $derived_interface"
-          echo "OnPoint target: Build $target_build / Interface $target_interface"
+          echo "ComfyOnPoint target: Build $target_build / Interface $target_interface"
 
       - name: Open compatibility issue
         if: steps.forever.outputs.changed == 'true'
@@ -97,18 +97,18 @@ jobs:
           - Build: `$BUILD`
           - Derived Interface: `$DETECTED_INTERFACE`
 
-          ### Current OnPoint target
+          ### Current ComfyOnPoint target
           - Build: `$TARGET_BUILD`
           - Interface: `$TARGET_INTERFACE`
 
-          ### Before updating OnPoint
+          ### Before updating ComfyOnPoint
           - [ ] Launch the new WoW Forever client.
-          - [ ] Confirm `GetBuildInfo()` / Interface in OnPoint's Info tab.
+          - [ ] Confirm `GetBuildInfo()` / Interface in ComfyOnPoint's Info tab.
           - [ ] Test cursor-following tooltips on units, items and action-bar spells.
           - [ ] Test the minimap button, profiles, range status and health/resource bars.
           - [ ] Only then update `## Interface:`, target build, addon version and changelog.
 
-          OnPoint intentionally does not mark an untested Interface as compatible automatically.
+          ComfyOnPoint intentionally does not mark an untested Interface as compatible automatically.
           EOF
           )"
 

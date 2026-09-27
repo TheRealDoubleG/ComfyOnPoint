@@ -1,13 +1,13 @@
-# OnPoint
+# ComfyOnPoint
 
-**Version 1.10 — Beta**  
+**Version 1.11 — Beta**  
 **Tested target: WoW Forever 1.60.1 / Build 70009 / Interface 16001**  
 Author: **TheRealDoubleG**  
 Discord: **the.real.double.g**
 
-**Main feature: OnPoint keeps the tooltip at your mouse cursor instead of letting it jump back to Blizzard's default tooltip position.**
+**Main feature: ComfyOnPoint keeps the tooltip at your mouse cursor instead of letting it jump back to Blizzard's default tooltip position.**
 
-OnPoint is a lightweight Blizzard-style tooltip addon for World of Warcraft Forever. It preserves the original Blizzard tooltip content — including spell, item and action-bar information — and adds configurable cursor anchoring, profiles, optional unit information, range status, health/resource bars and a live preview.
+ComfyOnPoint is a lightweight Blizzard-style tooltip addon for World of Warcraft Forever. It preserves the original Blizzard tooltip content — including spell, item and action-bar information — and adds configurable cursor anchoring, profiles, optional unit information, range status, health/resource bars and a live preview.
 
 ## Features
 
@@ -26,12 +26,12 @@ OnPoint is a lightweight Blizzard-style tooltip addon for World of Warcraft Fore
 - Optional `Range:` prefix. Disable it to show only `In Range` / `Out of Range`.
 - Range check uses a known class spell and does not invent a result when the client cannot provide one safely.
 - Optional health and resource bars above or below the tooltip.
-- Minimap button: left-click toggles OnPoint, right-click opens settings, drag to move when unlocked.
-- Saved settings-window position with its own default location, so OnPoint and ComfyBar no longer open directly on top of each other.
+- Minimap button: left-click toggles ComfyOnPoint, right-click opens settings, drag to move when unlocked.
+- Saved settings-window position with its own default location, so ComfyOnPoint and ComfyBar no longer open directly on top of each other.
 - Settings window uses a dedicated high UI layer and raises when clicked.
 - Live tooltip preview in the settings window.
 - Automatic German UI on a German client (`deDE`); English on other client locales.
-- Info tab shows the **currently running client version, build and interface** and whether the Interface version matches OnPoint's tested target.
+- Info tab shows the **currently running client version, build and interface** and whether the Interface version matches ComfyOnPoint's tested target.
 - Optional pet/minion owner display when the client can resolve the owner.
 - `/onpoint` and `/op` open the settings.
 - `/onpoint debug` prints compatibility information.
@@ -40,40 +40,40 @@ OnPoint is a lightweight Blizzard-style tooltip addon for World of Warcraft Fore
 
 The repository contains a scheduled GitHub Actions check that looks for a newer WoW Forever build. If a newer build or Interface version is detected, it opens a GitHub issue for compatibility testing.
 
-OnPoint does **not** automatically claim compatibility with a new Interface version. The `## Interface:` value is only updated after a quick in-game test, so users do not receive an addon that is merely marked current but actually broken.
+ComfyOnPoint does **not** automatically claim compatibility with a new Interface version. The `## Interface:` value is only updated after a quick in-game test, so users do not receive an addon that is merely marked current but actually broken.
 
 ## Installation
 
 1. Close World of Warcraft Forever.
 2. Extract the ZIP archive.
-3. Copy the contained `OnPoint` folder to:
+3. Copy the contained `ComfyOnPoint` folder to:
 
    `World of Warcraft\Interface\AddOns\`
 
 4. The final path must look like:
 
-   `World of Warcraft\Interface\AddOns\OnPoint\OnPoint.toc`
+   `World of Warcraft\Interface\AddOns\ComfyOnPoint\ComfyOnPoint.toc`
 
-5. Start WoW Forever and enable OnPoint in the AddOns list.
+5. Start WoW Forever and enable ComfyOnPoint in the AddOns list.
 
-Your settings are stored in `OnPointDB` and normally survive addon updates.
+Your settings are stored in `ComfyOnPointDB` and normally survive addon updates. Existing settings from the former `OnPointDB` name are migrated automatically on first launch.
 
 ## Beta note
 
-OnPoint 1.9 is marked as **Beta** while compatibility is being tested against WoW Forever Build 70009. The addon only modifies the user interface. It does not automate gameplay actions and it does not guess values the client does not reliably expose.
+ComfyOnPoint 1.11 is marked as **Beta** while compatibility is being tested against WoW Forever Build 70009. The addon only modifies the user interface. It does not automate gameplay actions and it does not guess values the client does not reliably expose.
 
 ---
 
-# OnPoint – Deutsch
+# ComfyOnPoint – Deutsch
 
-**Version 1.10 — Beta**  
+**Version 1.11 — Beta**  
 **Getestetes Ziel: WoW Forever 1.60.1 / Build 70009 / Interface 16001**  
 Autor: **TheRealDoubleG**  
 Discord: **the.real.double.g**
 
-**Hauptfunktion: OnPoint hält den Tooltip am Mauszeiger, statt ihn an die normale Blizzard-Tooltip-Position zurückspringen zu lassen.**
+**Hauptfunktion: ComfyOnPoint hält den Tooltip am Mauszeiger, statt ihn an die normale Blizzard-Tooltip-Position zurückspringen zu lassen.**
 
-OnPoint ist ein leichtgewichtiges Tooltip-Addon im Blizzard-Stil für World of Warcraft Forever. Die originalen Blizzard-Tooltip-Inhalte bleiben erhalten – also auch Informationen zu Zaubern, Gegenständen und Aktionsleisten-Skills.
+ComfyOnPoint ist ein leichtgewichtiges Tooltip-Addon im Blizzard-Stil für World of Warcraft Forever. Die originalen Blizzard-Tooltip-Inhalte bleiben erhalten – also auch Informationen zu Zaubern, Gegenständen und Aktionsleisten-Skills.
 
 ## Highlights
 
@@ -92,21 +92,33 @@ OnPoint ist ein leichtgewichtiges Tooltip-Addon im Blizzard-Stil für World of W
 
 GitHub prüft regelmäßig, ob ein neuer WoW-Forever-Build erschienen ist. Wird ein neuer Build oder eine andere Interface-Version erkannt, wird automatisch ein GitHub-Issue für den Kompatibilitätstest angelegt.
 
-Die `## Interface:`-Nummer wird bewusst **nicht blind automatisch geändert**. Erst nach einem kurzen Test wird sie aktualisiert, damit OnPoint nicht nur „nicht veraltet“ aussieht, sondern wirklich funktioniert.
+Die `## Interface:`-Nummer wird bewusst **nicht blind automatisch geändert**. Erst nach einem kurzen Test wird sie aktualisiert, damit ComfyOnPoint nicht nur „nicht veraltet“ aussieht, sondern wirklich funktioniert.
 
 ## Installation
 
-ZIP entpacken und den enthaltenen Ordner `OnPoint` nach
+ZIP entpacken und den enthaltenen Ordner `ComfyOnPoint` nach
 
 `World of Warcraft\Interface\AddOns\`
 
 kopieren. Danach muss folgende Datei existieren:
 
-`World of Warcraft\Interface\AddOns\OnPoint\OnPoint.toc`
+`World of Warcraft\Interface\AddOns\ComfyOnPoint\ComfyOnPoint.toc`
 
-WoW anschließend komplett neu starten und OnPoint in der AddOn-Liste aktivieren.
+WoW anschließend komplett neu starten und ComfyOnPoint in der AddOn-Liste aktivieren.
 
 
 ## Comfy Suite UI standard
 
-OnPoint follows the shared Comfy Suite menu and Info-tab standard: Blizzard-style movable settings window, top tab navigation, persistent window position, consistent Info layout, Comfy Suite badge, compatibility information, author/Discord/GitHub fields and matching footer styling.
+ComfyOnPoint follows the shared Comfy Suite menu and Info-tab standard: Blizzard-style movable settings window, top tab navigation, persistent window position, consistent Info layout, Comfy Suite badge, compatibility information, author/Discord/GitHub fields and matching footer styling.
+
+
+## Rename from OnPoint
+
+Starting with **1.11 Beta**, the addon is named **ComfyOnPoint** to match the Comfy Suite naming scheme.
+
+- New addon folder: `ComfyOnPoint`
+- New TOC: `ComfyOnPoint.toc`
+- New commands: `/comfyonpoint` and `/cop`
+- Legacy commands `/onpoint` and `/op` remain available.
+- Existing `OnPointDB` settings are migrated automatically to `ComfyOnPointDB`.
+- The legacy global `OnPoint` remains as an alias for compatibility with older integrations.

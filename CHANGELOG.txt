@@ -1,3 +1,13 @@
+ComfyOnPoint Changelog
+
+Version 1.11 - Beta - 27.09.2026
+- Renamed OnPoint to ComfyOnPoint as part of the Comfy Suite.
+- Existing OnPointDB settings migrate automatically to ComfyOnPointDB.
+- New commands: /comfyonpoint and /cop.
+- Legacy /onpoint and /op commands remain available.
+
+================
+
 OnPoint Changelog
 
 Version 1.5 - Beta - 26.09.2026

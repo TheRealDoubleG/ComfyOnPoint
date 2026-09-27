@@ -1,5 +1,6 @@
-OnPoint = OnPoint or {}
-local OP = OnPoint
+ComfyOnPoint = ComfyOnPoint or OnPoint or {}
+OnPoint = ComfyOnPoint -- legacy global alias for older integrations
+local OP = ComfyOnPoint
 
 local EN = {
     DESCRIPTION = "Blizzard-style mouseover tooltip with profiles, range state and optional health/resource bars.",
@@ -15,7 +16,7 @@ local EN = {
     TAB_INFO = "Info",
 
     GENERAL = "General",
-    ADDON_ENABLED = "Enable OnPoint",
+    ADDON_ENABLED = "Enable ComfyOnPoint",
     FOLLOW_CURSOR = "Tooltip follows mouse cursor",
     CURSOR_ANCHOR = "Tooltip position at cursor",
     ANCHOR_TOPRIGHT = "Top right",
@@ -34,9 +35,9 @@ local EN = {
     TOOLTIP_FADE_OUT = "Fade-out duration",
     MINIMAP_SHOW = "Show minimap button",
     MINIMAP_LOCK = "Lock minimap button",
-    MINIMAP_HELP = "Left-click: OnPoint on/off\nRight-click: Settings\nDrag: Move position (when unlocked)",
+    MINIMAP_HELP = "Left-click: ComfyOnPoint on/off\nRight-click: Settings\nDrag: Move position (when unlocked)",
     DEFAULTS = "Defaults",
-    RESET_CONFIRM = "Reset all OnPoint settings to defaults?",
+    RESET_CONFIRM = "Reset all ComfyOnPoint settings to defaults?",
 
     PROFILES = "Profiles",
     GAME_CONTEXT = "Game context",
@@ -66,7 +67,7 @@ local EN = {
     BAR_POSITION = "Bar position",
     BELOW_TOOLTIP = "Below tooltip",
     ABOVE_TOOLTIP = "Above tooltip",
-    RANGE_NOTE = "Range uses a known spell of your class. Talent-based range changes are handled by the client. If no reliable result is available, OnPoint shows nothing.",
+    RANGE_NOTE = "Range uses a known spell of your class. Talent-based range changes are handled by the client. If no reliable result is available, ComfyOnPoint shows nothing.",
 
     PREVIEW_TITLE = "Live preview",
     PREVIEW_TEXT = "The preview uses the currently selected context profile.",
@@ -82,7 +83,7 @@ local EN = {
     PREVIEW_PET_OWNER = "Arcanis",
     PREVIEW_CREATURE = "Beast",
 
-    INFO_TITLE = "About OnPoint",
+    INFO_TITLE = "About ComfyOnPoint",
     INFO_VERSION = "Version",
     INFO_BUILD_DATE = "Build date",
     INFO_STATUS = "Status",
@@ -98,10 +99,10 @@ local EN = {
     INFO_GITHUB = "GitHub",
     INFO_COPY = "Click, select and copy with Ctrl+C.",
     INFO_COMMANDS = "Slash commands",
-    INFO_NOTICE = "OnPoint only changes the user interface. It does not automate gameplay and does not guess values the client does not expose reliably.",
-    INFO_THANKS = "Thanks for using OnPoint! Feedback and bug reports are welcome via Discord.",
-    SETTINGS_DESC = "OnPoint has a Blizzard-style settings window with profile management and live preview.",
-    SETTINGS_OPEN = "Open OnPoint settings",
+    INFO_NOTICE = "ComfyOnPoint only changes the user interface. It does not automate gameplay and does not guess values the client does not expose reliably.",
+    INFO_THANKS = "Thanks for using ComfyOnPoint! Feedback and bug reports are welcome via Discord.",
+    SETTINGS_DESC = "ComfyOnPoint has a Blizzard-style settings window with profile management and live preview.",
+    SETTINGS_OPEN = "Open ComfyOnPoint settings",
 
     CONTEXT_WORLD = "Out of combat",
     CONTEXT_COMBAT = "In combat",
@@ -148,7 +149,7 @@ local DE = {
     TAB_INFO = "Info",
 
     GENERAL = "Allgemein",
-    ADDON_ENABLED = "OnPoint aktivieren",
+    ADDON_ENABLED = "ComfyOnPoint aktivieren",
     FOLLOW_CURSOR = "Tooltip folgt dem Mauszeiger",
     CURSOR_ANCHOR = "Tooltip-Position am Mauszeiger",
     ANCHOR_TOPRIGHT = "Oben rechts",
@@ -167,9 +168,9 @@ local DE = {
     TOOLTIP_FADE_OUT = "Ausblend-Dauer",
     MINIMAP_SHOW = "Minimap-Button anzeigen",
     MINIMAP_LOCK = "Minimap-Button sperren",
-    MINIMAP_HELP = "Linksklick: OnPoint an/aus\nRechtsklick: Einstellungen\nZiehen: Position ändern (wenn entsperrt)",
+    MINIMAP_HELP = "Linksklick: ComfyOnPoint an/aus\nRechtsklick: Einstellungen\nZiehen: Position ändern (wenn entsperrt)",
     DEFAULTS = "Standardwerte",
-    RESET_CONFIRM = "Alle OnPoint-Einstellungen auf Standard zurücksetzen?",
+    RESET_CONFIRM = "Alle ComfyOnPoint-Einstellungen auf Standard zurücksetzen?",
 
     PROFILES = "Profile",
     GAME_CONTEXT = "Spielkontext",
@@ -199,7 +200,7 @@ local DE = {
     BAR_POSITION = "Balkenposition",
     BELOW_TOOLTIP = "Unter dem Tooltip",
     ABOVE_TOOLTIP = "Über dem Tooltip",
-    RANGE_NOTE = "Reichweite nutzt einen bekannten Zauber deiner Klasse. Talentbedingte Reichweitenänderungen werden vom Client berücksichtigt. Wenn keine sichere Aussage möglich ist, zeigt OnPoint nichts an.",
+    RANGE_NOTE = "Reichweite nutzt einen bekannten Zauber deiner Klasse. Talentbedingte Reichweitenänderungen werden vom Client berücksichtigt. Wenn keine sichere Aussage möglich ist, zeigt ComfyOnPoint nichts an.",
 
     PREVIEW_TITLE = "Live-Vorschau",
     PREVIEW_TEXT = "Die Vorschau verwendet das aktuell ausgewählte Kontext-Profil.",
@@ -215,7 +216,7 @@ local DE = {
     PREVIEW_PET_OWNER = "Arkanis",
     PREVIEW_CREATURE = "Wildtier",
 
-    INFO_TITLE = "Über OnPoint",
+    INFO_TITLE = "Über ComfyOnPoint",
     INFO_VERSION = "Version",
     INFO_BUILD_DATE = "Build-Datum",
     INFO_STATUS = "Status",
@@ -231,10 +232,10 @@ local DE = {
     INFO_GITHUB = "GitHub",
     INFO_COPY = "Anklicken, markieren und mit Strg+C kopieren.",
     INFO_COMMANDS = "Slash-Befehle",
-    INFO_NOTICE = "OnPoint verändert ausschließlich die Benutzeroberfläche. Es automatisiert keine Spielaktionen und errät keine vom Client nicht sicher verfügbaren Werte.",
-    INFO_THANKS = "Danke fürs Benutzen von OnPoint! Feedback und Fehlerberichte sind über Discord willkommen.",
-    SETTINGS_DESC = "OnPoint besitzt ein Blizzard-artiges eigenes Einstellungsfenster mit Profilverwaltung und Live-Vorschau.",
-    SETTINGS_OPEN = "OnPoint-Einstellungen öffnen",
+    INFO_NOTICE = "ComfyOnPoint verändert ausschließlich die Benutzeroberfläche. Es automatisiert keine Spielaktionen und errät keine vom Client nicht sicher verfügbaren Werte.",
+    INFO_THANKS = "Danke fürs Benutzen von ComfyOnPoint! Feedback und Fehlerberichte sind über Discord willkommen.",
+    SETTINGS_DESC = "ComfyOnPoint besitzt ein Blizzard-artiges eigenes Einstellungsfenster mit Profilverwaltung und Live-Vorschau.",
+    SETTINGS_OPEN = "ComfyOnPoint-Einstellungen öffnen",
 
     CONTEXT_WORLD = "Außerhalb des Kampfes",
     CONTEXT_COMBAT = "Im Kampf",

@@ -1,11 +1,11 @@
 ## Interface: 16001
-## Title: OnPoint
+## Title: ComfyOnPoint
 ## Notes: Keeps the tooltip at the mouse cursor; adds profiles, range state, unit details and optional health/resource bars for WoW Forever.
 ## Notes-deDE: Hält den Tooltip am Mauszeiger; ergänzt Profile, Reichweitenstatus sowie optionale Lebens- und Ressourcenbalken für WoW Forever.
 ## Author: TheRealDoubleG
-## Version: 1.10
-## SavedVariables: OnPointDB
-## X-Website: https://github.com/TheRealDoubleG/OnPoint
+## Version: 1.11
+## SavedVariables: ComfyOnPointDB, OnPointDB
+## X-Website: https://github.com/TheRealDoubleG/ComfyOnPoint
 ## X-ComfySuite: true
 ## X-ComfyUI: 1
 ## IconTexture: Interface\Icons\INV_Misc_Spyglass_03

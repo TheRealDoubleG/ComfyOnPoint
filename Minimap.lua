@@ -1,5 +1,6 @@
-OnPoint = OnPoint or {}
-local OP = OnPoint
+ComfyOnPoint = ComfyOnPoint or OnPoint or {}
+OnPoint = ComfyOnPoint -- legacy global alias for older integrations
+local OP = ComfyOnPoint
 
 local function GetButtonRadius(button)
     if not Minimap then return 95 end
@@ -43,7 +44,7 @@ end
 function OP:InitializeMinimap()
     if self.minimapButton or not Minimap then return end
 
-    local button = CreateFrame("Button", "OnPointMinimapButton", Minimap)
+    local button = CreateFrame("Button", "ComfyOnPointMinimapButton", Minimap)
     button:SetSize(32, 32)
     button:SetFrameStrata("MEDIUM")
     button:SetFrameLevel(8)
@@ -79,7 +80,7 @@ function OP:InitializeMinimap()
 
     button:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_LEFT")
-        GameTooltip:AddLine("OnPoint", 1, 0.82, 0)
+        GameTooltip:AddLine("ComfyOnPoint", 1, 0.82, 0)
         GameTooltip:AddLine(OP.db.enabled and OP:T("ACTIVE") or OP:T("INACTIVE"), OP.db.enabled and 0.2 or 1, OP.db.enabled and 1 or 0.3, 0.2)
         GameTooltip:AddLine(" ")
         GameTooltip:AddLine(OP:T("MINIMAP_LEFT"), 1, 1, 1)

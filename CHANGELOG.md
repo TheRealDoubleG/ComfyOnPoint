@@ -1,4 +1,13 @@
-# OnPoint Changelog
+# ComfyOnPoint Changelog
+
+## 1.11 Beta - 27.09.2026
+- Renamed the addon from **OnPoint** to **ComfyOnPoint** to match the Comfy Suite family.
+- Renamed the primary addon folder/TOC target to `ComfyOnPoint` / `ComfyOnPoint.toc`.
+- Added automatic migration from `OnPointDB` to `ComfyOnPointDB` so existing settings are preserved.
+- Added new primary slash commands `/comfyonpoint` and `/cop`.
+- Kept legacy `/onpoint`, `/op` and the `OnPoint` global alias for compatibility.
+- Updated the GitHub URL and WoW Forever compatibility workflow to the new name.
+
 
 ## 1.10 Beta - 27.09.2026
 - Adopted the shared Comfy Suite UI standard.

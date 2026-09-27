@@ -1,5 +1,6 @@
-OnPoint = OnPoint or {}
-local OP = OnPoint
+ComfyOnPoint = ComfyOnPoint or OnPoint or {}
+OnPoint = ComfyOnPoint -- legacy global alias for older integrations
+local OP = ComfyOnPoint
 
 OP.contextNames = {
     world = OP:T("CONTEXT_WORLD"),

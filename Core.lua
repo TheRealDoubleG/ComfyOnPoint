@@ -1,10 +1,11 @@
 local ADDON_NAME = ...
 
-OnPoint = OnPoint or {}
-local OP = OnPoint
+ComfyOnPoint = ComfyOnPoint or OnPoint or {}
+OnPoint = ComfyOnPoint -- legacy global alias for older integrations
+local OP = ComfyOnPoint
 
-OP.name = ADDON_NAME or "OnPoint"
-OP.version = "1.10"
+OP.name = ADDON_NAME or "ComfyOnPoint"
+OP.version = "1.11"
 OP.buildDate = "27.09.2026"
 OP.status = "Beta"
 OP.gameVersion = "WoW Forever 1.60.1"
@@ -12,7 +13,7 @@ OP.targetBuild = "70009"
 OP.description = OP:T("DESCRIPTION")
 OP.author = "TheRealDoubleG"
 OP.discord = "the.real.double.g"
-OP.github = "https://github.com/TheRealDoubleG/OnPoint"
+OP.github = "https://github.com/TheRealDoubleG/ComfyOnPoint"
 OP.interface = 16001
 
 function OP:GetClientBuildInfo()
@@ -101,7 +102,7 @@ local function ApplyDefaults(dst, src)
 end
 
 function OP:Print(msg)
-    DEFAULT_CHAT_FRAME:AddMessage("|cffffd200OnPoint:|r " .. tostring(msg))
+    DEFAULT_CHAT_FRAME:AddMessage("|cffffd200ComfyOnPoint:|r " .. tostring(msg))
 end
 
 function OP:IsSecret(value)
@@ -122,21 +123,28 @@ function OP:SafeCall(func, ...)
 end
 
 function OP:GetDB()
-    return OnPointDB
+    return ComfyOnPointDB
 end
 
 function OP:ResetDB()
-    OnPointDB = CopyTable(defaults)
-    self.db = OnPointDB
+    ComfyOnPointDB = CopyTable(defaults)
+    self.db = ComfyOnPointDB
 end
 
 function OP:InitializeDB()
-    if type(OnPointDB) ~= "table" then
-        OnPointDB = CopyTable(defaults)
-    else
-        ApplyDefaults(OnPointDB, defaults)
+    -- One-time migration from the old OnPoint SavedVariables name.
+    if type(ComfyOnPointDB) ~= "table" and type(OnPointDB) == "table" then
+        ComfyOnPointDB = CopyTable(OnPointDB)
+        OnPointDB = nil
     end
-    self.db = OnPointDB
+
+    if type(ComfyOnPointDB) ~= "table" then
+        ComfyOnPointDB = CopyTable(defaults)
+    else
+        ApplyDefaults(ComfyOnPointDB, defaults)
+    end
+
+    self.db = ComfyOnPointDB
     if self.NormalizeCustomProfiles then
         self:NormalizeCustomProfiles()
     end
@@ -324,8 +332,8 @@ function OP:CreateBars()
         return bar
     end
 
-    self.healthBar = NewBar("OnPointHealthBar")
-    self.resourceBar = NewBar("OnPointResourceBar")
+    self.healthBar = NewBar("ComfyOnPointHealthBar")
+    self.resourceBar = NewBar("ComfyOnPointResourceBar")
 end
 
 function OP:HideBars()
@@ -545,10 +553,10 @@ end
 
 function OP:CancelTooltipFade(tooltip, restoreAlpha)
     if not tooltip then return end
-    tooltip.__OnPointFadeMode = nil
-    tooltip.__OnPointFadeStart = nil
-    tooltip.__OnPointFadeDuration = nil
-    tooltip.__OnPointFadeFrom = nil
+    tooltip.__ComfyOnPointFadeMode = nil
+    tooltip.__ComfyOnPointFadeStart = nil
+    tooltip.__ComfyOnPointFadeDuration = nil
+    tooltip.__ComfyOnPointFadeFrom = nil
     if restoreAlpha then
         self:SetTooltipCompositeAlpha(tooltip, 1)
     end
@@ -558,10 +566,10 @@ function OP:MarkUnitTooltipActive(tooltip)
     if not tooltip then return end
 
     local fadeEnabled = self.db and self.db.tooltipFadeEnabled
-    local mode = tooltip.__OnPointFadeMode
-    local wasUnit = tooltip.__OnPointWasUnit and true or false
+    local mode = tooltip.__ComfyOnPointFadeMode
+    local wasUnit = tooltip.__ComfyOnPointWasUnit and true or false
     local wasLeaving = mode == "wait" or mode == "out"
-    tooltip.__OnPointWasUnit = true
+    tooltip.__ComfyOnPointWasUnit = true
 
     if not fadeEnabled then
         self:CancelTooltipFade(tooltip, true)
@@ -580,10 +588,10 @@ function OP:MarkUnitTooltipActive(tooltip)
         if duration <= 0 then
             self:CancelTooltipFade(tooltip, true)
         else
-            tooltip.__OnPointFadeMode = "in"
-            tooltip.__OnPointFadeStart = GetTime and GetTime() or 0
-            tooltip.__OnPointFadeDuration = duration
-            tooltip.__OnPointFadeFrom = Clamp01(currentAlpha)
+            tooltip.__ComfyOnPointFadeMode = "in"
+            tooltip.__ComfyOnPointFadeStart = GetTime and GetTime() or 0
+            tooltip.__ComfyOnPointFadeDuration = duration
+            tooltip.__ComfyOnPointFadeFrom = Clamp01(currentAlpha)
         end
     elseif mode ~= "in" then
         self:SetTooltipCompositeAlpha(tooltip, 1)
@@ -591,7 +599,7 @@ function OP:MarkUnitTooltipActive(tooltip)
 end
 
 function OP:ScheduleTooltipFadeOut(tooltip)
-    if not tooltip or not tooltip.__OnPointWasUnit then return end
+    if not tooltip or not tooltip.__ComfyOnPointWasUnit then return end
 
     if not self.db or not self.db.tooltipFadeEnabled then
         self:CancelTooltipFade(tooltip, true)
@@ -599,29 +607,29 @@ function OP:ScheduleTooltipFadeOut(tooltip)
         return
     end
 
-    local mode = tooltip.__OnPointFadeMode
+    local mode = tooltip.__ComfyOnPointFadeMode
     if mode == "wait" or mode == "out" then return end
 
-    tooltip.__OnPointFadeMode = "wait"
-    tooltip.__OnPointFadeStart = GetTime and GetTime() or 0
-    tooltip.__OnPointFadeDuration = math.max(0, tonumber(self.db.tooltipHoldTime) or 0.10)
-    tooltip.__OnPointFadeFrom = tooltip.GetAlpha and tooltip:GetAlpha() or 1
+    tooltip.__ComfyOnPointFadeMode = "wait"
+    tooltip.__ComfyOnPointFadeStart = GetTime and GetTime() or 0
+    tooltip.__ComfyOnPointFadeDuration = math.max(0, tonumber(self.db.tooltipHoldTime) or 0.10)
+    tooltip.__ComfyOnPointFadeFrom = tooltip.GetAlpha and tooltip:GetAlpha() or 1
 end
 
 function OP:UpdateTooltipFade(tooltip)
     if not tooltip or not tooltip:IsShown() then return end
 
     if not self.db or not self.db.tooltipFadeEnabled then
-        if tooltip.__OnPointFadeMode then self:CancelTooltipFade(tooltip, true) end
+        if tooltip.__ComfyOnPointFadeMode then self:CancelTooltipFade(tooltip, true) end
         return
     end
 
-    local mode = tooltip.__OnPointFadeMode
+    local mode = tooltip.__ComfyOnPointFadeMode
     if not mode then return end
 
     local now = GetTime and GetTime() or 0
-    local startTime = tooltip.__OnPointFadeStart or now
-    local duration = math.max(0, tonumber(tooltip.__OnPointFadeDuration) or 0)
+    local startTime = tooltip.__ComfyOnPointFadeStart or now
+    local duration = math.max(0, tonumber(tooltip.__ComfyOnPointFadeDuration) or 0)
 
     if mode == "wait" then
         if type(UnitExists) == "function" and UnitExists("mouseover") then
@@ -630,18 +638,18 @@ function OP:UpdateTooltipFade(tooltip)
         end
         if (now - startTime) < duration then return end
 
-        tooltip.__OnPointFadeMode = "out"
-        tooltip.__OnPointFadeStart = now
-        tooltip.__OnPointFadeDuration = math.max(0, tonumber(self.db.tooltipFadeOut) or 0.12)
-        tooltip.__OnPointFadeFrom = tooltip.GetAlpha and tooltip:GetAlpha() or 1
+        tooltip.__ComfyOnPointFadeMode = "out"
+        tooltip.__ComfyOnPointFadeStart = now
+        tooltip.__ComfyOnPointFadeDuration = math.max(0, tonumber(self.db.tooltipFadeOut) or 0.12)
+        tooltip.__ComfyOnPointFadeFrom = tooltip.GetAlpha and tooltip:GetAlpha() or 1
         mode = "out"
         startTime = now
-        duration = tooltip.__OnPointFadeDuration
+        duration = tooltip.__ComfyOnPointFadeDuration
     end
 
     if mode == "in" or mode == "out" then
         local progress = duration <= 0 and 1 or math.min(1, math.max(0, (now - startTime) / duration))
-        local from = Clamp01(tooltip.__OnPointFadeFrom or (mode == "in" and 0 or 1))
+        local from = Clamp01(tooltip.__ComfyOnPointFadeFrom or (mode == "in" and 0 or 1))
         local alpha
 
         if mode == "in" then
@@ -656,7 +664,7 @@ function OP:UpdateTooltipFade(tooltip)
             if mode == "in" then
                 self:CancelTooltipFade(tooltip, true)
             else
-                tooltip.__OnPointWasUnit = false
+                tooltip.__ComfyOnPointWasUnit = false
                 self:CancelTooltipFade(tooltip, false)
                 self:HideBars()
                 self:SetTooltipCompositeAlpha(tooltip, 0)
@@ -782,7 +790,7 @@ function OP:AddUnitInfo(tooltip, unit, profile)
             else
                 tooltip:AddLine(self:FormatRange(false, profile), self.colors.red[1], self.colors.red[2], self.colors.red[3])
             end
-            tooltip.__OnPointRangeLine = index
+            tooltip.__ComfyOnPointRangeLine = index
         end
     end
 
@@ -803,9 +811,9 @@ function OP:RefreshUnitTooltip(tooltip)
     local profile, profileName, context = self:GetActiveProfile()
     local signature = tostring(guid) .. "|" .. tostring(profileName) .. "|" .. tostring(context)
 
-    if tooltip.__OnPointSignature ~= signature then
-        tooltip.__OnPointSignature = signature
-        tooltip.__OnPointRangeLine = nil
+    if tooltip.__ComfyOnPointSignature ~= signature then
+        tooltip.__ComfyOnPointSignature = signature
+        tooltip.__ComfyOnPointRangeLine = nil
         self:AddUnitInfo(tooltip, unit, profile)
     else
         self:ColorTooltipName(tooltip, unit, profile)
@@ -858,7 +866,7 @@ function OP:UpdateDynamicTooltip(tooltip)
 
     local unit = self:GetTooltipUnit(tooltip)
     if not unit then
-        if tooltip.__OnPointWasUnit then
+        if tooltip.__ComfyOnPointWasUnit then
             self:ScheduleTooltipFadeOut(tooltip)
         else
             self:HideBars()
@@ -870,10 +878,10 @@ function OP:UpdateDynamicTooltip(tooltip)
     local profile = self:GetActiveProfile()
     self:UpdateBars(tooltip, unit, profile)
 
-    if profile and profile.range and tooltip.__OnPointRangeLine then
+    if profile and profile.range and tooltip.__ComfyOnPointRangeLine then
         local state = self:GetRangeState(unit)
         local tooltipName = tooltip:GetName()
-        local line = tooltipName and _G[tooltipName .. "TextLeft" .. tooltip.__OnPointRangeLine]
+        local line = tooltipName and _G[tooltipName .. "TextLeft" .. tooltip.__ComfyOnPointRangeLine]
         if line then
             if state == true then
                 line:SetText(self:FormatRange(true, profile))
@@ -922,23 +930,23 @@ function OP:InstallTooltipHooks()
     if TooltipDataProcessor and TooltipDataProcessor.AddTooltipPostCall and Enum and Enum.TooltipDataType and Enum.TooltipDataType.Unit then
         pcall(TooltipDataProcessor.AddTooltipPostCall, Enum.TooltipDataType.Unit, function(tooltip)
             if tooltip == GameTooltip then
-                tooltip.__OnPointSignature = nil
+                tooltip.__ComfyOnPointSignature = nil
                 OP:RefreshUnitTooltip(tooltip)
                 OP:PositionTooltipAtCursor(tooltip)
             end
         end)
     else
         pcall(GameTooltip.HookScript, GameTooltip, "OnTooltipSetUnit", function(tooltip)
-            tooltip.__OnPointSignature = nil
+            tooltip.__ComfyOnPointSignature = nil
             OP:RefreshUnitTooltip(tooltip)
             OP:PositionTooltipAtCursor(tooltip)
         end)
     end
 
     pcall(GameTooltip.HookScript, GameTooltip, "OnTooltipCleared", function(tooltip)
-        local wasUnit = tooltip.__OnPointWasUnit or tooltip.__OnPointSignature ~= nil
-        tooltip.__OnPointSignature = nil
-        tooltip.__OnPointRangeLine = nil
+        local wasUnit = tooltip.__ComfyOnPointWasUnit or tooltip.__ComfyOnPointSignature ~= nil
+        tooltip.__ComfyOnPointSignature = nil
+        tooltip.__ComfyOnPointRangeLine = nil
         if wasUnit then
             OP:ScheduleTooltipFadeOut(tooltip)
         else
@@ -947,7 +955,7 @@ function OP:InstallTooltipHooks()
     end)
 
     local function MarkNonUnitTooltip(tooltip)
-        tooltip.__OnPointWasUnit = false
+        tooltip.__ComfyOnPointWasUnit = false
         OP:CancelTooltipFade(tooltip, true)
         OP:HideBars()
     end
@@ -960,7 +968,7 @@ function OP:InstallTooltipHooks()
             OP:ApplyTooltipAppearance(tooltip)
             OP:RefreshUnitTooltip(tooltip)
             if not OP:GetTooltipUnit(tooltip) then
-                tooltip.__OnPointWasUnit = false
+                tooltip.__ComfyOnPointWasUnit = false
                 OP:CancelTooltipFade(tooltip, true)
             end
             OP:PositionTooltipAtCursor(tooltip)
@@ -968,9 +976,9 @@ function OP:InstallTooltipHooks()
     end)
 
     GameTooltip:HookScript("OnHide", function(tooltip)
-        tooltip.__OnPointSignature = nil
-        tooltip.__OnPointRangeLine = nil
-        tooltip.__OnPointWasUnit = false
+        tooltip.__ComfyOnPointSignature = nil
+        tooltip.__ComfyOnPointRangeLine = nil
+        tooltip.__ComfyOnPointWasUnit = false
         OP:CancelTooltipFade(tooltip, true)
         OP:HideBars()
     end)
@@ -1014,9 +1022,11 @@ function OP:OpenOptions()
 end
 
 function OP:RegisterSlashCommands()
-    SLASH_ONPOINT1 = "/onpoint"
-    SLASH_ONPOINT2 = "/op"
-    SlashCmdList.ONPOINT = function(msg)
+    SLASH_COMFYONPOINT1 = "/comfyonpoint"
+    SLASH_COMFYONPOINT2 = "/cop"
+    SLASH_COMFYONPOINT3 = "/onpoint"
+    SLASH_COMFYONPOINT4 = "/op"
+    SlashCmdList.COMFYONPOINT = function(msg)
         msg = (msg or ""):lower():match("^%s*(.-)%s*$")
         if msg == "on" then
             OP:SetEnabled(true)
@@ -1060,7 +1070,7 @@ events:SetScript("OnEvent", function(_, event, arg1)
         if OP.UpdateMinimapPosition then OP:UpdateMinimapPosition() end
     else
         if GameTooltip and GameTooltip:IsShown() then
-            GameTooltip.__OnPointSignature = nil
+            GameTooltip.__ComfyOnPointSignature = nil
             OP:RefreshUnitTooltip(GameTooltip)
         end
         if OP.RefreshOptions then OP:RefreshOptions() end
