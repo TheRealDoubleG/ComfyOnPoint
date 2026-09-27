@@ -1,5 +1,10 @@
 # ComfyOnPoint Changelog
 
+## 1.15 Beta – 27.09.2026
+- Fixed Background opacity so 0% fully removes the Comfy window background while the border can remain.
+- Aligned the shared Load / copy control with its profile dropdown.
+
+
 ## 1.14 Beta – 27.09.2026
 - Fixed duplicate creature-type text on NPC tooltips when Blizzard/WoW Forever already provides the same line.
 - ComfyOnPoint now scans the existing tooltip before appending its own creature-type line.
