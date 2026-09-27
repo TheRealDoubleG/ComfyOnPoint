@@ -1,5 +1,11 @@
 ComfyOnPoint Changelog
 
+Version 1.13 - Beta - 27.09.2026
+- Added the shared Settings tab and suite UI standard generation 2.
+- Added standalone character/account/custom saved profiles and copy-from-character support.
+- Added common window lock, opacity, border/background and minimap presentation settings.
+
+
 Version 1.12 - Beta - 27.09.2026
 - Added reliable ComfyHub minimap bundling support.
 - The standalone minimap button hides while bundled and returns when bundling is disabled.
