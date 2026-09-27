@@ -253,7 +253,8 @@ local function SelectTab(index)
     local frame = OP.optionsFrame
     if not frame then return end
     for i, tab in ipairs(frame.tabs) do
-        tab:SetEnabled(i ~= index)
+        tab:SetEnabled(true)
+        tab:SetButtonState(i == index and "PUSHED" or "NORMAL", i == index)
         frame.pages[i]:SetShown(i == index)
     end
     if index == 3 then OP:UpdatePreview() end
@@ -282,6 +283,7 @@ function OP:RefreshOptions()
     if self.profileDropdown and self.profileDropdown._refresh then self.profileDropdown._refresh() end
     if self.barPositionDropdown and self.barPositionDropdown._refresh then self.barPositionDropdown._refresh() end
     if self.cursorAnchorDropdown and self.cursorAnchorDropdown._refresh then self.cursorAnchorDropdown._refresh() end
+    if self.RefreshSharedSettingsPage then self:RefreshSharedSettingsPage() end
 
     if self.combatFallbackCheck then
         local special = selectedContext == "battleground" or selectedContext == "dungeon" or selectedContext == "raid"
@@ -322,6 +324,7 @@ function OP:InitializeOptions()
     frame:RegisterForDrag("LeftButton")
     frame:SetScript("OnMouseDown", function(self) self:Raise() end)
     frame:SetScript("OnDragStart", function(self)
+        if OP:IsOptionsWindowLocked() then return end
         self:Raise()
         self:StartMoving()
     end)
@@ -341,7 +344,7 @@ function OP:InitializeOptions()
 
     frame.tabs = {}
     frame.pages = {}
-    local tabNames = {self:T("TAB_GENERAL"), self:T("TAB_PROFILES"), self:T("TAB_PREVIEW"), self:T("TAB_INFO")}
+    local tabNames = {self:T("TAB_GENERAL"), self:T("TAB_PROFILES"), self:T("TAB_PREVIEW"), self:GetSharedSettingsTabLabel(), self:T("TAB_INFO")}
     for i, label in ipairs(tabNames) do
         local tab = CreateButton(frame, label, 18 + (i - 1) * 120, -35, 110, function() SelectTab(i) end)
         frame.tabs[i] = tab
@@ -428,33 +431,27 @@ function OP:InitializeOptions()
         function() return OP.db.showBorder end,
         function(v) OP.db.showBorder = v end)
 
-    CreateCheck(general, self:T("MINIMAP_SHOW"), 375, -240,
-        function() return OP.db.minimap.show end,
-        function(v) OP.db.minimap.show = v OP:UpdateMinimapPosition() end)
+    local settingsHint = general:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")
+    settingsHint:SetPoint("TOPLEFT", 390, -240)
+    settingsHint:SetWidth(300)
+    settingsHint:SetJustifyH("LEFT")
+    settingsHint:SetText((GetLocale and GetLocale() == "deDE")
+        and "Minimap, Fensterdarstellung und Charakterprofile befinden sich im Reiter Einstellungen."
+        or "Minimap, window appearance and character profiles are in the Settings tab.")
 
-    CreateCheck(general, self:T("MINIMAP_LOCK"), 375, -273,
-        function() return OP.db.minimap.locked end,
-        function(v) OP.db.minimap.locked = v end)
-
-    local miniHelp = general:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")
-    miniHelp:SetPoint("TOPLEFT", 400, -308)
-    miniHelp:SetWidth(290)
-    miniHelp:SetJustifyH("LEFT")
-    miniHelp:SetText(self:T("MINIMAP_HELP"))
-
-    local fadeInSlider = CreateSlider(general, self:T("TOOLTIP_FADE_IN"), 0, 1, 0.05, 390, -375,
+    local fadeInSlider = CreateSlider(general, self:T("TOOLTIP_FADE_IN"), 0, 1, 0.05, 390, -335,
         function() return OP.db.tooltipFadeIn or 0.08 end,
         function(v) OP.db.tooltipFadeIn = math.floor(v * 100 + 0.5) / 100 end,
         function(v) return string.format("%.2f s", v) end)
     fadeInSlider._format = function(v) return string.format("%.2f s", v) end
 
-    local fadeOutSlider = CreateSlider(general, self:T("TOOLTIP_FADE_OUT"), 0, 1, 0.05, 390, -445,
+    local fadeOutSlider = CreateSlider(general, self:T("TOOLTIP_FADE_OUT"), 0, 1, 0.05, 390, -405,
         function() return OP.db.tooltipFadeOut or 0.12 end,
         function(v) OP.db.tooltipFadeOut = math.floor(v * 100 + 0.5) / 100 end,
         function(v) return string.format("%.2f s", v) end)
     fadeOutSlider._format = function(v) return string.format("%.2f s", v) end
 
-    CreateButton(general, self:T("DEFAULTS"), 375, -505, 150, function()
+    CreateButton(general, self:T("DEFAULTS"), 375, -475, 150, function()
         StaticPopupDialogs.ONPOINT_RESET = {
             text = OP:T("RESET_CONFIRM"),
             button1 = YES,
@@ -592,8 +589,12 @@ function OP:InitializeOptions()
     CreatePreview(preview)
     frame.previewBox = preview.previewBox
 
+    -- Shared addon settings
+    local settingsPage = frame.pages[4]
+    self:BuildSharedSettingsPage(settingsPage)
+
     -- Info
-    local infoPage = frame.pages[4]
+    local infoPage = frame.pages[5]
     local ititle = infoPage:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge")
     ititle:SetPoint("TOPLEFT", 20, -10)
     ititle:SetText(self:T("INFO_TITLE"))
@@ -709,25 +710,29 @@ function OP:InitializeOptions()
     InfoRow(self:T("INFO_COMMANDS"), "/comfyonpoint  ·  /cop", -328)
 
     local uiNotice = infoBox:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")
-    uiNotice:SetPoint("TOPLEFT", 28, -360)
+    uiNotice:SetPoint("TOPLEFT", 28, -345)
     uiNotice:SetWidth(620)
+    uiNotice:SetHeight(42)
     uiNotice:SetJustifyH("LEFT")
+    uiNotice:SetJustifyV("TOP")
     uiNotice:SetText(self:T("INFO_NOTICE"))
 
     local copyright = infoBox:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")
-    copyright:SetPoint("BOTTOMLEFT", 28, 68)
+    copyright:SetPoint("BOTTOMLEFT", 28, 48)
     copyright:SetText("© 2026 TheRealDoubleG")
 
     local thanks = infoBox:CreateFontString(nil, "ARTWORK", "GameFontHighlight")
-    thanks:SetPoint("BOTTOMLEFT", 28, 28)
+    thanks:SetPoint("BOTTOMLEFT", 28, 16)
     thanks:SetWidth(620)
     thanks:SetJustifyH("LEFT")
     thanks:SetText(self:T("INFO_THANKS"))
 
     frame:SetScript("OnShow", function()
+        OP:ApplySharedWindowSettings()
         OP:RefreshOptions()
     end)
 
+    self:ApplySharedWindowSettings()
     SelectTab(1)
 
     -- Zusätzlich unter ESC -> Optionen -> AddOns registrieren, falls die moderne Settings-API vorhanden ist.
