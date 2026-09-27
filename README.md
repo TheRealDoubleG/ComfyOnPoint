@@ -1,6 +1,6 @@
 # ComfyOnPoint
 
-**Version 1.13 — Beta**  
+**Version 1.14 — Beta**  
 **Tested target: WoW Forever 1.60.1 / Build 70009 / Interface 16001**  
 Author: **TheRealDoubleG**  
 Discord: **the.real.double.g**
@@ -36,6 +36,7 @@ ComfyOnPoint is a lightweight Blizzard-style tooltip addon for World of Warcraft
 - Automatic German UI on a German client (`deDE`); English on other client locales.
 - Info tab shows the **currently running client version, build and interface** and whether the Interface version matches ComfyOnPoint's tested target.
 - Optional pet/minion owner display when the client can resolve the owner.
+- Creature type is only appended when the same line is not already present in Blizzard's tooltip, preventing duplicate lines such as `Creature type: Humanoid`.
 - `/onpoint` and `/op` open the settings.
 - `/onpoint debug` prints compatibility information.
 
