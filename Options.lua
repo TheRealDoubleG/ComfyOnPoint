@@ -398,6 +398,19 @@ function OP:InitializeOptions()
         function(v) return string.format("%d%%", v) end)
     scaleSlider._format = function(v) return string.format("%d%%", v) end
 
+    CreateCheck(general, self:T("TOOLTIP_FADE"), 20, -405,
+        function() return OP.db.tooltipFadeEnabled end,
+        function(v)
+            OP.db.tooltipFadeEnabled = v
+            if not v and GameTooltip then OP:CancelTooltipFade(GameTooltip, true) end
+        end)
+
+    local holdSlider = CreateSlider(general, self:T("TOOLTIP_HOLD"), 0, 2, 0.05, 35, -455,
+        function() return OP.db.tooltipHoldTime or 0.10 end,
+        function(v) OP.db.tooltipHoldTime = math.floor(v * 100 + 0.5) / 100 end,
+        function(v) return string.format("%.2f s", v) end)
+    holdSlider._format = function(v) return string.format("%.2f s", v) end
+
     local bgSlider = CreateSlider(general, self:T("BG_ALPHA"), 0, 100, 1, 390, -65,
         function() return math.floor((OP.db.backgroundAlpha or 0.92) * 100 + 0.5) end,
         function(v) OP.db.backgroundAlpha = v / 100 end,
@@ -428,7 +441,19 @@ function OP:InitializeOptions()
     miniHelp:SetJustifyH("LEFT")
     miniHelp:SetText(self:T("MINIMAP_HELP"))
 
-    CreateButton(general, self:T("DEFAULTS"), 375, -400, 150, function()
+    local fadeInSlider = CreateSlider(general, self:T("TOOLTIP_FADE_IN"), 0, 1, 0.05, 390, -375,
+        function() return OP.db.tooltipFadeIn or 0.08 end,
+        function(v) OP.db.tooltipFadeIn = math.floor(v * 100 + 0.5) / 100 end,
+        function(v) return string.format("%.2f s", v) end)
+    fadeInSlider._format = function(v) return string.format("%.2f s", v) end
+
+    local fadeOutSlider = CreateSlider(general, self:T("TOOLTIP_FADE_OUT"), 0, 1, 0.05, 390, -445,
+        function() return OP.db.tooltipFadeOut or 0.12 end,
+        function(v) OP.db.tooltipFadeOut = math.floor(v * 100 + 0.5) / 100 end,
+        function(v) return string.format("%.2f s", v) end)
+    fadeOutSlider._format = function(v) return string.format("%.2f s", v) end
+
+    CreateButton(general, self:T("DEFAULTS"), 375, -505, 150, function()
         StaticPopupDialogs.ONPOINT_RESET = {
             text = OP:T("RESET_CONFIRM"),
             button1 = YES,
@@ -684,7 +709,7 @@ function OP:InitializeOptions()
     uiNotice:SetText(self:T("INFO_NOTICE"))
 
     local copyright = infoBox:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")
-    copyright:SetPoint("TOPLEFT", 28, -414)
+    copyright:SetPoint("BOTTOMLEFT", 28, 68)
     copyright:SetText("© 2026 TheRealDoubleG")
 
     local thanks = infoBox:CreateFontString(nil, "ARTWORK", "GameFontHighlight")

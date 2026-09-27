@@ -1,6 +1,6 @@
 # OnPoint
 
-**Version 1.7 — Beta**  
+**Version 1.8 — Beta**  
 **Tested target: WoW Forever 1.60.1 / Build 70009 / Interface 16001**  
 Author: **TheRealDoubleG**  
 Discord: **the.real.double.g**
@@ -15,6 +15,7 @@ OnPoint is a lightweight Blizzard-style tooltip addon for World of Warcraft Fore
 - Four cursor anchor positions: top right, top left, bottom right and bottom left.
 - X/Y cursor offset and tooltip window scaling from 50% to 150%.
 - Background opacity, text opacity and optional tooltip border.
+- Configurable unit-tooltip fade with separate hide delay, fade-in duration and fade-out duration. The default is deliberately quick so crowded player areas do not leave tooltips hanging on screen.
 - Keeps Blizzard's original spell/item/action tooltip information.
 - Context profiles for world, combat, battlegrounds, dungeons and raids.
 - Built-in presets: Minimal, Preferred and Complete.
@@ -59,13 +60,13 @@ Your settings are stored in `OnPointDB` and normally survive addon updates.
 
 ## Beta note
 
-OnPoint 1.7 is marked as **Beta** while compatibility is being tested against WoW Forever Build 70009. The addon only modifies the user interface. It does not automate gameplay actions and it does not guess values the client does not reliably expose.
+OnPoint 1.8 is marked as **Beta** while compatibility is being tested against WoW Forever Build 70009. The addon only modifies the user interface. It does not automate gameplay actions and it does not guess values the client does not reliably expose.
 
 ---
 
 # OnPoint – Deutsch
 
-**Version 1.7 — Beta**  
+**Version 1.8 — Beta**  
 **Getestetes Ziel: WoW Forever 1.60.1 / Build 70009 / Interface 16001**  
 Autor: **TheRealDoubleG**  
 Discord: **the.real.double.g**

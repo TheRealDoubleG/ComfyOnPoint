@@ -4,7 +4,7 @@ OnPoint = OnPoint or {}
 local OP = OnPoint
 
 OP.name = ADDON_NAME or "OnPoint"
-OP.version = "1.7"
+OP.version = "1.8"
 OP.buildDate = "27.09.2026"
 OP.status = "Beta"
 OP.gameVersion = "WoW Forever 1.60.1"
@@ -48,6 +48,10 @@ local defaults = {
     showBorder = true,
     tooltipScale = 1.00,
     cursorAnchor = "TOPRIGHT",
+    tooltipFadeEnabled = true,
+    tooltipHoldTime = 0.10,
+    tooltipFadeIn = 0.08,
+    tooltipFadeOut = 0.12,
     minimap = {
         show = true,
         locked = false,
@@ -524,6 +528,144 @@ function OP:RestoreTooltipAppearance(tooltip)
     end
 end
 
+local function Clamp01(value)
+    value = tonumber(value) or 0
+    if value < 0 then return 0 end
+    if value > 1 then return 1 end
+    return value
+end
+
+function OP:SetTooltipCompositeAlpha(tooltip, alpha)
+    if not tooltip then return end
+    alpha = Clamp01(alpha)
+    if tooltip.SetAlpha then tooltip:SetAlpha(alpha) end
+    if self.healthBar and self.healthBar.SetAlpha then self.healthBar:SetAlpha(alpha) end
+    if self.resourceBar and self.resourceBar.SetAlpha then self.resourceBar:SetAlpha(alpha) end
+end
+
+function OP:CancelTooltipFade(tooltip, restoreAlpha)
+    if not tooltip then return end
+    tooltip.__OnPointFadeMode = nil
+    tooltip.__OnPointFadeStart = nil
+    tooltip.__OnPointFadeDuration = nil
+    tooltip.__OnPointFadeFrom = nil
+    if restoreAlpha then
+        self:SetTooltipCompositeAlpha(tooltip, 1)
+    end
+end
+
+function OP:MarkUnitTooltipActive(tooltip)
+    if not tooltip then return end
+
+    local fadeEnabled = self.db and self.db.tooltipFadeEnabled
+    local mode = tooltip.__OnPointFadeMode
+    local wasUnit = tooltip.__OnPointWasUnit and true or false
+    local wasLeaving = mode == "wait" or mode == "out"
+    tooltip.__OnPointWasUnit = true
+
+    if not fadeEnabled then
+        self:CancelTooltipFade(tooltip, true)
+        return
+    end
+
+    local duration = math.max(0, tonumber(self.db.tooltipFadeIn) or 0.08)
+    local currentAlpha = tooltip.GetAlpha and tooltip:GetAlpha() or 1
+
+    if not wasUnit then
+        currentAlpha = 0
+        self:SetTooltipCompositeAlpha(tooltip, 0)
+    end
+
+    if not wasUnit or wasLeaving then
+        if duration <= 0 then
+            self:CancelTooltipFade(tooltip, true)
+        else
+            tooltip.__OnPointFadeMode = "in"
+            tooltip.__OnPointFadeStart = GetTime and GetTime() or 0
+            tooltip.__OnPointFadeDuration = duration
+            tooltip.__OnPointFadeFrom = Clamp01(currentAlpha)
+        end
+    elseif mode ~= "in" then
+        self:SetTooltipCompositeAlpha(tooltip, 1)
+    end
+end
+
+function OP:ScheduleTooltipFadeOut(tooltip)
+    if not tooltip or not tooltip.__OnPointWasUnit then return end
+
+    if not self.db or not self.db.tooltipFadeEnabled then
+        self:CancelTooltipFade(tooltip, true)
+        self:HideBars()
+        return
+    end
+
+    local mode = tooltip.__OnPointFadeMode
+    if mode == "wait" or mode == "out" then return end
+
+    tooltip.__OnPointFadeMode = "wait"
+    tooltip.__OnPointFadeStart = GetTime and GetTime() or 0
+    tooltip.__OnPointFadeDuration = math.max(0, tonumber(self.db.tooltipHoldTime) or 0.10)
+    tooltip.__OnPointFadeFrom = tooltip.GetAlpha and tooltip:GetAlpha() or 1
+end
+
+function OP:UpdateTooltipFade(tooltip)
+    if not tooltip or not tooltip:IsShown() then return end
+
+    if not self.db or not self.db.tooltipFadeEnabled then
+        if tooltip.__OnPointFadeMode then self:CancelTooltipFade(tooltip, true) end
+        return
+    end
+
+    local mode = tooltip.__OnPointFadeMode
+    if not mode then return end
+
+    local now = GetTime and GetTime() or 0
+    local startTime = tooltip.__OnPointFadeStart or now
+    local duration = math.max(0, tonumber(tooltip.__OnPointFadeDuration) or 0)
+
+    if mode == "wait" then
+        if type(UnitExists) == "function" and UnitExists("mouseover") then
+            self:CancelTooltipFade(tooltip, true)
+            return
+        end
+        if (now - startTime) < duration then return end
+
+        tooltip.__OnPointFadeMode = "out"
+        tooltip.__OnPointFadeStart = now
+        tooltip.__OnPointFadeDuration = math.max(0, tonumber(self.db.tooltipFadeOut) or 0.12)
+        tooltip.__OnPointFadeFrom = tooltip.GetAlpha and tooltip:GetAlpha() or 1
+        mode = "out"
+        startTime = now
+        duration = tooltip.__OnPointFadeDuration
+    end
+
+    if mode == "in" or mode == "out" then
+        local progress = duration <= 0 and 1 or math.min(1, math.max(0, (now - startTime) / duration))
+        local from = Clamp01(tooltip.__OnPointFadeFrom or (mode == "in" and 0 or 1))
+        local alpha
+
+        if mode == "in" then
+            alpha = from + ((1 - from) * progress)
+        else
+            alpha = from * (1 - progress)
+        end
+
+        self:SetTooltipCompositeAlpha(tooltip, alpha)
+
+        if progress >= 1 then
+            if mode == "in" then
+                self:CancelTooltipFade(tooltip, true)
+            else
+                tooltip.__OnPointWasUnit = false
+                self:CancelTooltipFade(tooltip, false)
+                self:HideBars()
+                self:SetTooltipCompositeAlpha(tooltip, 0)
+                tooltip:Hide()
+            end
+        end
+    end
+end
+
 function OP:ColorTooltipName(tooltip, unit, profile)
     if not profile.classColor then return end
     local r, g, b = self:GetClassColor(unit)
@@ -655,6 +797,8 @@ function OP:RefreshUnitTooltip(tooltip)
         return
     end
 
+    self:MarkUnitTooltipActive(tooltip)
+
     local guid = self:SafeCall(UnitGUID, unit) or unit
     local profile, profileName, context = self:GetActiveProfile()
     local signature = tostring(guid) .. "|" .. tostring(profileName) .. "|" .. tostring(context)
@@ -714,10 +858,15 @@ function OP:UpdateDynamicTooltip(tooltip)
 
     local unit = self:GetTooltipUnit(tooltip)
     if not unit then
-        self:HideBars()
+        if tooltip.__OnPointWasUnit then
+            self:ScheduleTooltipFadeOut(tooltip)
+        else
+            self:HideBars()
+        end
         return
     end
 
+    self:MarkUnitTooltipActive(tooltip)
     local profile = self:GetActiveProfile()
     self:UpdateBars(tooltip, unit, profile)
 
@@ -787,15 +936,33 @@ function OP:InstallTooltipHooks()
     end
 
     pcall(GameTooltip.HookScript, GameTooltip, "OnTooltipCleared", function(tooltip)
+        local wasUnit = tooltip.__OnPointWasUnit or tooltip.__OnPointSignature ~= nil
         tooltip.__OnPointSignature = nil
         tooltip.__OnPointRangeLine = nil
-        OP:HideBars()
+        if wasUnit then
+            OP:ScheduleTooltipFadeOut(tooltip)
+        else
+            OP:HideBars()
+        end
     end)
+
+    local function MarkNonUnitTooltip(tooltip)
+        tooltip.__OnPointWasUnit = false
+        OP:CancelTooltipFade(tooltip, true)
+        OP:HideBars()
+    end
+
+    pcall(GameTooltip.HookScript, GameTooltip, "OnTooltipSetItem", MarkNonUnitTooltip)
+    pcall(GameTooltip.HookScript, GameTooltip, "OnTooltipSetSpell", MarkNonUnitTooltip)
 
     GameTooltip:HookScript("OnShow", function(tooltip)
         if OP.db and OP.db.enabled then
             OP:ApplyTooltipAppearance(tooltip)
             OP:RefreshUnitTooltip(tooltip)
+            if not OP:GetTooltipUnit(tooltip) then
+                tooltip.__OnPointWasUnit = false
+                OP:CancelTooltipFade(tooltip, true)
+            end
             OP:PositionTooltipAtCursor(tooltip)
         end
     end)
@@ -803,11 +970,15 @@ function OP:InstallTooltipHooks()
     GameTooltip:HookScript("OnHide", function(tooltip)
         tooltip.__OnPointSignature = nil
         tooltip.__OnPointRangeLine = nil
+        tooltip.__OnPointWasUnit = false
+        OP:CancelTooltipFade(tooltip, true)
         OP:HideBars()
     end)
 
     local elapsed = 0
     GameTooltip:HookScript("OnUpdate", function(tooltip, delta)
+        OP:UpdateTooltipFade(tooltip)
+
         -- Position every frame so action buttons cannot pull the tooltip back to their own anchor.
         if OP.db and OP.db.enabled and OP.db.followCursor then
             OP:PositionTooltipAtCursor(tooltip)

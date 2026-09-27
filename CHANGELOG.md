@@ -1,5 +1,13 @@
 # OnPoint Changelog
 
+## 1.8 Beta - 27.09.2026
+- Fixed overlapping copyright/thanks text at the bottom of the Info tab.
+- Added configurable fading for unit/player mouseover tooltips.
+- Added separate settings for hide delay after leaving a target, fade-in duration and fade-out duration.
+- Default unit tooltip timing is now quick: 0.10 s hold, 0.08 s fade-in and 0.12 s fade-out.
+- Item and spell tooltips are excluded from the unit fade logic so normal action/item tooltip behavior is preserved.
+
+
 ## 1.7 Beta - 27.09.2026
 - Added persistent OnPoint settings-window positioning.
 - Gave OnPoint a separate right-offset default settings-window location so it no longer opens directly on top of ComfyBar.
