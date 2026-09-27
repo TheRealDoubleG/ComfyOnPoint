@@ -1,5 +1,10 @@
 ComfyOnPoint Changelog
 
+Version 1.14 - Beta - 27.09.2026
+- Fixed duplicate creature-type lines when the base tooltip already shows the same creature type.
+- Existing tooltip text is checked before ComfyOnPoint adds its own creature-type line.
+
+
 Version 1.13 - Beta - 27.09.2026
 - Added the shared Settings tab and suite UI standard generation 2.
 - Added standalone character/account/custom saved profiles and copy-from-character support.
