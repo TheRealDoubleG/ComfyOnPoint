@@ -4,7 +4,7 @@ OnPoint = OnPoint or {}
 local OP = OnPoint
 
 OP.name = ADDON_NAME or "OnPoint"
-OP.version = "1.6"
+OP.version = "1.7"
 OP.buildDate = "27.09.2026"
 OP.status = "Beta"
 OP.gameVersion = "WoW Forever 1.60.1"
@@ -52,6 +52,12 @@ local defaults = {
         show = true,
         locked = false,
         angle = 220,
+    },
+    optionsWindow = {
+        point = "CENTER",
+        relativePoint = "CENTER",
+        x = 360,
+        y = -40,
     },
     contextProfile = {
         world = "Bevorzugt",

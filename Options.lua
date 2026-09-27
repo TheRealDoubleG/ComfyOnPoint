@@ -306,15 +306,35 @@ function OP:InitializeOptions()
 
     local frame = CreateFrame("Frame", "OnPointOptions", UIParent, "BasicFrameTemplateWithInset")
     frame:SetSize(760, 620)
-    frame:SetPoint("CENTER")
-    frame:SetFrameStrata("DIALOG")
+    local savedPos = self.db and self.db.optionsWindow or nil
+    local point = savedPos and savedPos.point or "CENTER"
+    local relativePoint = savedPos and savedPos.relativePoint or point
+    frame:SetPoint(point, UIParent, relativePoint, savedPos and savedPos.x or 360, savedPos and savedPos.y or -40)
+    frame:SetClampedToScreen(true)
+    frame:SetFrameStrata("HIGH")
+    frame:SetFrameLevel(20)
+    if frame.SetToplevel then frame:SetToplevel(true) end
     frame:Hide()
     frame.TitleText:SetText("OnPoint")
     frame:SetMovable(true)
     frame:EnableMouse(true)
     frame:RegisterForDrag("LeftButton")
-    frame:SetScript("OnDragStart", frame.StartMoving)
-    frame:SetScript("OnDragStop", frame.StopMovingOrSizing)
+    frame:SetScript("OnMouseDown", function(self) self:Raise() end)
+    frame:SetScript("OnDragStart", function(self)
+        self:Raise()
+        self:StartMoving()
+    end)
+    frame:SetScript("OnDragStop", function(self)
+        self:StopMovingOrSizing()
+        local p, _, rp, x, y = self:GetPoint(1)
+        if OP.db and p then
+            OP.db.optionsWindow = OP.db.optionsWindow or {}
+            OP.db.optionsWindow.point = p
+            OP.db.optionsWindow.relativePoint = rp or p
+            OP.db.optionsWindow.x = x or 0
+            OP.db.optionsWindow.y = y or 0
+        end
+    end)
     table.insert(UISpecialFrames, frame:GetName())
     self.optionsFrame = frame
 
@@ -588,8 +608,8 @@ function OP:InitializeOptions()
     local clientVersion, clientBuild, _, clientInterface = OP:GetClientBuildInfo()
     local compatible, compatibilityText = OP:GetCompatibilityStatus()
 
-    InfoRow(self:T("INFO_VERSION"), OP.version or "1.5", -100)
-    InfoRow(self:T("INFO_BUILD_DATE"), OP.buildDate or "26.09.2026", -122)
+    InfoRow(self:T("INFO_VERSION"), OP.version or "1.7", -100)
+    InfoRow(self:T("INFO_BUILD_DATE"), OP.buildDate or "27.09.2026", -122)
     InfoRow(self:T("INFO_STATUS"), OP.status or "Beta", -144)
     InfoRow(
         self:T("INFO_CLIENT"),

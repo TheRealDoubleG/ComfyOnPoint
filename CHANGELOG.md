@@ -1,5 +1,12 @@
 # OnPoint Changelog
 
+## 1.7 Beta - 27.09.2026
+- Added persistent OnPoint settings-window positioning.
+- Gave OnPoint a separate right-offset default settings-window location so it no longer opens directly on top of ComfyBar.
+- Moved the settings window to HIGH strata / level 20, enabled top-level behavior and raise-on-click.
+- Kept OnPoint's tooltip health/resource bars on the TOOLTIP layer by design, separate from ComfyBar's normal MEDIUM-layer bars.
+
+
 ## 1.6 Beta - 27.09.2026
 - Fixed the minimap tracking-border anchor so the gold ring now sits correctly around the OnPoint icon instead of appearing detached.
 

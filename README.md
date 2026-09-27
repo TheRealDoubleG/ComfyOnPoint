@@ -1,6 +1,6 @@
 # OnPoint
 
-**Version 1.6 — Beta**  
+**Version 1.7 — Beta**  
 **Tested target: WoW Forever 1.60.1 / Build 70009 / Interface 16001**  
 Author: **TheRealDoubleG**  
 Discord: **the.real.double.g**
@@ -26,6 +26,8 @@ OnPoint is a lightweight Blizzard-style tooltip addon for World of Warcraft Fore
 - Range check uses a known class spell and does not invent a result when the client cannot provide one safely.
 - Optional health and resource bars above or below the tooltip.
 - Minimap button: left-click toggles OnPoint, right-click opens settings, drag to move when unlocked.
+- Saved settings-window position with its own default location, so OnPoint and ComfyBar no longer open directly on top of each other.
+- Settings window uses a dedicated high UI layer and raises when clicked.
 - Live tooltip preview in the settings window.
 - Automatic German UI on a German client (`deDE`); English on other client locales.
 - Info tab shows the **currently running client version, build and interface** and whether the Interface version matches OnPoint's tested target.
@@ -57,13 +59,13 @@ Your settings are stored in `OnPointDB` and normally survive addon updates.
 
 ## Beta note
 
-OnPoint 1.6 is marked as **Beta** while compatibility is being tested against WoW Forever Build 70009. The addon only modifies the user interface. It does not automate gameplay actions and it does not guess values the client does not reliably expose.
+OnPoint 1.7 is marked as **Beta** while compatibility is being tested against WoW Forever Build 70009. The addon only modifies the user interface. It does not automate gameplay actions and it does not guess values the client does not reliably expose.
 
 ---
 
 # OnPoint – Deutsch
 
-**Version 1.6 — Beta**  
+**Version 1.7 — Beta**  
 **Getestetes Ziel: WoW Forever 1.60.1 / Build 70009 / Interface 16001**  
 Autor: **TheRealDoubleG**  
 Discord: **the.real.double.g**
