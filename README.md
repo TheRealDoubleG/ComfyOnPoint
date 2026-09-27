@@ -1,6 +1,6 @@
 # ComfyOnPoint
 
-**Version 1.11 — Beta**  
+**Version 1.12 — Beta**  
 **Tested target: WoW Forever 1.60.1 / Build 70009 / Interface 16001**  
 Author: **TheRealDoubleG**  
 Discord: **the.real.double.g**
