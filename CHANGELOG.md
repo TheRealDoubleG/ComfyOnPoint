@@ -1,5 +1,15 @@
 # ComfyOnPoint Changelog
 
+## 1.13 Beta – 27.09.2026
+- Added the suite-wide **Settings** tab immediately before Info.
+- Added independent per-character, account and named custom saved profiles in addition to ComfyOnPoint's existing gameplay-context tooltip profiles.
+- Added copy/load from another known character profile without requiring a separate profile addon.
+- Added settings-window lock, 10–100% window opacity, optional Blizzard border, minimalist black/grey background and independent background opacity.
+- Moved minimap presentation controls out of General into Settings.
+- Rebalanced the freed General-tab space and kept tooltip-specific controls in their feature pages.
+- Changed active tabs to a selected/pushed state and cleaned Info footer spacing.
+
+
 ## 1.12 Beta – 27.09.2026
 - Added reliable ComfyHub minimap bundling support.
 - The standalone minimap button now hides while ComfyHub bundling is active.
