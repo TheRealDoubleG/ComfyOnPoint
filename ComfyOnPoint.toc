@@ -7,7 +7,7 @@
 ## SavedVariables: ComfyOnPointDB, OnPointDB
 ## X-Website: https://github.com/TheRealDoubleG/ComfyOnPoint
 ## X-ComfySuite: true
-## X-ComfyUI: 1
+## X-ComfyUI: 2
 ## IconTexture: Interface\Icons\INV_Misc_Spyglass_03
 
 Locale.lua
