@@ -5,7 +5,7 @@ OnPoint = ComfyOnPoint -- legacy global alias for older integrations
 local OP = ComfyOnPoint
 
 OP.name = ADDON_NAME or "ComfyOnPoint"
-OP.version = "1.12"
+OP.version = "1.13"
 OP.buildDate = "27.09.2026"
 OP.status = "Beta"
 OP.gameVersion = "WoW Forever 1.60.1"
@@ -63,6 +63,12 @@ local defaults = {
         relativePoint = "CENTER",
         x = 360,
         y = -40,
+    },
+    ui = {
+        windowLocked = false,
+        windowOpacity = 100,
+        showWindowBorder = true,
+        backgroundAlpha = 92,
     },
     contextProfile = {
         world = "Bevorzugt",
@@ -123,12 +129,16 @@ function OP:SafeCall(func, ...)
 end
 
 function OP:GetDB()
-    return ComfyOnPointDB
+    return self.db
 end
 
 function OP:ResetDB()
-    ComfyOnPointDB = CopyTable(defaults)
-    self.db = ComfyOnPointDB
+    if self.ResetActiveStorageProfile then
+        self:ResetActiveStorageProfile()
+    else
+        ComfyOnPointDB = CopyTable(defaults)
+        self.db = ComfyOnPointDB
+    end
 end
 
 function OP:InitializeDB()
@@ -138,13 +148,17 @@ function OP:InitializeDB()
         OnPointDB = nil
     end
 
-    if type(ComfyOnPointDB) ~= "table" then
-        ComfyOnPointDB = CopyTable(defaults)
+    if self.InitializeProfileStorage then
+        self:InitializeProfileStorage(defaults, "ComfyOnPointDB")
     else
-        ApplyDefaults(ComfyOnPointDB, defaults)
+        if type(ComfyOnPointDB) ~= "table" then
+            ComfyOnPointDB = CopyTable(defaults)
+        else
+            ApplyDefaults(ComfyOnPointDB, defaults)
+        end
+        self.db = ComfyOnPointDB
     end
 
-    self.db = ComfyOnPointDB
     if self.NormalizeCustomProfiles then
         self:NormalizeCustomProfiles()
     end
