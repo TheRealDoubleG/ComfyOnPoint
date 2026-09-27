@@ -1,6 +1,6 @@
 # OnPoint
 
-**Version 1.8 — Beta**  
+**Version 1.9 — Beta**  
 **Tested target: WoW Forever 1.60.1 / Build 70009 / Interface 16001**  
 Author: **TheRealDoubleG**  
 Discord: **the.real.double.g**
@@ -60,13 +60,13 @@ Your settings are stored in `OnPointDB` and normally survive addon updates.
 
 ## Beta note
 
-OnPoint 1.8 is marked as **Beta** while compatibility is being tested against WoW Forever Build 70009. The addon only modifies the user interface. It does not automate gameplay actions and it does not guess values the client does not reliably expose.
+OnPoint 1.9 is marked as **Beta** while compatibility is being tested against WoW Forever Build 70009. The addon only modifies the user interface. It does not automate gameplay actions and it does not guess values the client does not reliably expose.
 
 ---
 
 # OnPoint – Deutsch
 
-**Version 1.8 — Beta**  
+**Version 1.9 — Beta**  
 **Getestetes Ziel: WoW Forever 1.60.1 / Build 70009 / Interface 16001**  
 Autor: **TheRealDoubleG**  
 Discord: **the.real.double.g**

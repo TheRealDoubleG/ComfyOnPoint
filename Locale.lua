@@ -15,7 +15,7 @@ local EN = {
     TAB_INFO = "Info",
 
     GENERAL = "General",
-    ADDON_ENABLED = "Addon enabled",
+    ADDON_ENABLED = "Enable OnPoint",
     FOLLOW_CURSOR = "Tooltip follows mouse cursor",
     CURSOR_ANCHOR = "Tooltip position at cursor",
     ANCHOR_TOPRIGHT = "Top right",
@@ -148,7 +148,7 @@ local DE = {
     TAB_INFO = "Info",
 
     GENERAL = "Allgemein",
-    ADDON_ENABLED = "Addon aktiviert",
+    ADDON_ENABLED = "OnPoint aktivieren",
     FOLLOW_CURSOR = "Tooltip folgt dem Mauszeiger",
     CURSOR_ANCHOR = "Tooltip-Position am Mauszeiger",
     ANCHOR_TOPRIGHT = "Oben rechts",

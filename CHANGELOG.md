@@ -1,5 +1,10 @@
 # OnPoint Changelog
 
+## 1.9 Beta - 27.09.2026
+- Renamed the main enable setting from "Addon enabled" to "Enable OnPoint" for consistency with ComfyBar.
+- German client label is now "OnPoint aktivieren".
+
+
 ## 1.8 Beta - 27.09.2026
 - Fixed overlapping copyright/thanks text at the bottom of the Info tab.
 - Added configurable fading for unit/player mouseover tooltips.
