@@ -1,5 +1,12 @@
 # ComfyOnPoint Changelog
 
+## 1.12 Beta – 27.09.2026
+- Added reliable ComfyHub minimap bundling support.
+- The standalone minimap button now hides while ComfyHub bundling is active.
+- Disabling bundling restores the button according to this addon's own minimap visibility setting.
+- Re-enabling bundling hides the standalone button again immediately.
+
+
 ## 1.11 Beta - 27.09.2026
 - Renamed the addon from **OnPoint** to **ComfyOnPoint** to match the Comfy Suite family.
 - Renamed the primary addon folder/TOC target to `ComfyOnPoint` / `ComfyOnPoint.toc`.
