@@ -5,7 +5,7 @@ OnPoint = ComfyOnPoint -- legacy global alias for older integrations
 local OP = ComfyOnPoint
 
 OP.name = ADDON_NAME or "ComfyOnPoint"
-OP.version = "1.13"
+OP.version = "1.14"
 OP.buildDate = "27.09.2026"
 OP.status = "Beta"
 OP.gameVersion = "WoW Forever 1.60.1"
@@ -753,6 +753,47 @@ function OP:FormatRange(state, profile)
     return self:T("RANGE_PREFIX") .. ": " .. value
 end
 
+local function NormalizeTooltipLine(text)
+    if type(text) ~= "string" then return "" end
+    text = text:gsub("|c%x%x%x%x%x%x%x%x", "")
+    text = text:gsub("|r", "")
+    text = text:gsub("|T.-|t", "")
+    text = text:gsub("^%s+", ""):gsub("%s+$", "")
+    return text:lower()
+end
+
+function OP:TooltipHasLine(tooltip, wantedText)
+    if not tooltip or type(tooltip.NumLines) ~= "function" then return false end
+
+    local wanted = NormalizeTooltipLine(wantedText)
+    if wanted == "" then return false end
+
+    local tooltipName = type(tooltip.GetName) == "function" and tooltip:GetName() or nil
+    if type(tooltipName) ~= "string" or tooltipName == "" then return false end
+
+    local count = tonumber(tooltip:NumLines()) or 0
+    for i = 1, count do
+        local left = _G[tooltipName .. "TextLeft" .. i]
+        local right = _G[tooltipName .. "TextRight" .. i]
+
+        if left and type(left.GetText) == "function" then
+            local ok, text = pcall(left.GetText, left)
+            if ok and NormalizeTooltipLine(text) == wanted then
+                return true
+            end
+        end
+
+        if right and type(right.GetText) == "function" then
+            local ok, text = pcall(right.GetText, right)
+            if ok and NormalizeTooltipLine(text) == wanted then
+                return true
+            end
+        end
+    end
+
+    return false
+end
+
 function OP:AddUnitInfo(tooltip, unit, profile)
     if not unit or not profile then return end
 
@@ -791,7 +832,10 @@ function OP:AddUnitInfo(tooltip, unit, profile)
     if profile.creatureType and not isPlayer then
         local creatureType = self:SafeCall(UnitCreatureType, unit)
         if type(creatureType) == "string" and creatureType ~= "" and creatureType ~= UNKNOWN then
-            tooltip:AddLine(self:T("CREATURE_PREFIX") .. ": " .. creatureType, 0.82, 0.82, 0.82)
+            local creatureLine = self:T("CREATURE_PREFIX") .. ": " .. creatureType
+            if not self:TooltipHasLine(tooltip, creatureLine) then
+                tooltip:AddLine(creatureLine, 0.82, 0.82, 0.82)
+            end
         end
     end
 
