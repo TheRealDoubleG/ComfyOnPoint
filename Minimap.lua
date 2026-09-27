@@ -1,6 +1,19 @@
-ComfyOnPoint = ComfyOnPoint or OnPoint or {}
-OnPoint = ComfyOnPoint -- legacy global alias for older integrations
-local OP = ComfyOnPoint
+ComfyOnPoint = ComfyOnPoint or OnPoint or {}\nOnPoint = ComfyOnPoint -- legacy global alias for older integrations\nlocal OP = ComfyOnPoint
+
+local function HubWantsBundled()
+    local hub = rawget(_G, "ComfyHub")
+    if type(hub) ~= "table" then return false end
+
+    if type(hub.IsMinimapBundlingActive) == "function" then
+        local ok, bundled = pcall(hub.IsMinimapBundlingActive, hub)
+        if ok then return bundled and true or false end
+    end
+
+    return hub.db
+        and hub.db.minimap
+        and hub.db.minimap.show
+        and hub.db.minimap.bundleSuiteIcons ~= false
+end
 
 local function GetButtonRadius(button)
     if not Minimap then return 95 end
@@ -8,9 +21,6 @@ local function GetButtonRadius(button)
     local height = Minimap:GetHeight() or width
     local mapRadius = math.min(width, height) / 2
     local buttonRadius = ((button and button:GetWidth()) or 32) / 2
-
-    -- Keep the clickable icon centered just outside the map edge instead of
-    -- letting half of it cover the minimap.
     return mapRadius + buttonRadius + 2
 end
 
@@ -24,10 +34,22 @@ local function PositionFromAngle(button, angle)
     button:SetPoint("CENTER", Minimap, "CENTER", x, y)
 end
 
+function OP:SetMinimapBundled(bundled)
+    self.minimapBundled = bundled and true or false
+    if self.minimapButton and self.db then
+        self:UpdateMinimapPosition()
+    end
+end
+
+function OP:ShouldShowMinimapButton()
+    if not self.db or not self.db.minimap then return false end
+    return self.db.minimap.show and not self.minimapBundled and not HubWantsBundled()
+end
+
 function OP:UpdateMinimapPosition()
     if not self.minimapButton or not self.db then return end
     PositionFromAngle(self.minimapButton, self.db.minimap.angle)
-    self.minimapButton:SetShown(self.db.minimap.show)
+    self.minimapButton:SetShown(self:ShouldShowMinimapButton())
 end
 
 function OP:UpdateMinimapAppearance()
@@ -95,26 +117,23 @@ function OP:InitializeMinimap()
 
     button:SetScript("OnDragStart", function(self)
         if OP.db.minimap.locked then return end
-        self.dragging = true
         self:SetScript("OnUpdate", function(btn)
             local mx, my = Minimap:GetCenter()
             local cx, cy = GetCursorPosition()
             local scale = UIParent:GetEffectiveScale()
             if scale and scale > 0 then
                 cx, cy = cx / scale, cy / scale
-                local angle = math.deg(math.atan2(cy - my, cx - mx))
-                OP.db.minimap.angle = angle
-                PositionFromAngle(btn, angle)
+                OP.db.minimap.angle = math.deg(math.atan2(cy - my, cx - mx))
+                PositionFromAngle(btn, OP.db.minimap.angle)
             end
         end)
     end)
 
     button:SetScript("OnDragStop", function(self)
-        self.dragging = false
         self:SetScript("OnUpdate", nil)
     end)
 
     self.minimapButton = button
+    self.minimapBundled = HubWantsBundled()
     self:UpdateMinimapPosition()
-    self:UpdateMinimapAppearance()
-end
+    self:UpdateMinimapAppearance()\nend
