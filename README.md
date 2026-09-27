@@ -1,6 +1,6 @@
 # ComfyOnPoint
 
-**Version 1.12 — Beta**  
+**Version 1.13 — Beta**  
 **Tested target: WoW Forever 1.60.1 / Build 70009 / Interface 16001**  
 Author: **TheRealDoubleG**  
 Discord: **the.real.double.g**
@@ -28,6 +28,9 @@ ComfyOnPoint is a lightweight Blizzard-style tooltip addon for World of Warcraft
 - Optional health and resource bars above or below the tooltip.
 - Minimap button: left-click toggles ComfyOnPoint, right-click opens settings, drag to move when unlocked.
 - Saved settings-window position with its own default location, so ComfyOnPoint and ComfyBar no longer open directly on top of each other.
+- Shared **Settings** tab immediately before Info provides a second, suite-level saved-profile layer: automatic per-character, account and named custom profiles with copy/load from another known character.
+- Window lock, 10–100% overall opacity, optional Blizzard border, minimalist black/grey mode, independent background opacity and minimap presentation controls live in Settings.
+- These saved profiles work without any separate profile-manager addon; ComfyOnPoint's existing world/combat/instance tooltip profiles remain feature-specific.
 - Settings window uses a dedicated high UI layer and raises when clicked.
 - Live tooltip preview in the settings window.
 - Automatic German UI on a German client (`deDE`); English on other client locales.
