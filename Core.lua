@@ -5,8 +5,8 @@ OnPoint = ComfyOnPoint -- legacy global alias for older integrations
 local OP = ComfyOnPoint
 
 OP.name = ADDON_NAME or "ComfyOnPoint"
-OP.version = "1.15"
-OP.buildDate = "27.09.2026"
+OP.version = "1.16"
+OP.buildDate = "28.09.2026"
 OP.status = "Beta"
 OP.gameVersion = "WoW Forever 1.60.1"
 OP.targetBuild = "70009"
