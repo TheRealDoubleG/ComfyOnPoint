@@ -3,15 +3,16 @@
 ## Notes: Keeps the tooltip at the mouse cursor; adds profiles, range state, unit details and optional health/resource bars for WoW Forever.
 ## Notes-deDE: Hält den Tooltip am Mauszeiger; ergänzt Profile, Reichweitenstatus sowie optionale Lebens- und Ressourcenbalken für WoW Forever.
 ## Author: TheRealDoubleG
-## Version: 1.16
+## Version: 1.17
 ## SavedVariables: ComfyOnPointDB, OnPointDB
 ## X-Website: https://github.com/TheRealDoubleG/ComfyOnPoint
 ## X-ComfySuite: true
 ## X-ComfyUI: 2
-## IconTexture: Interface\Icons\INV_Misc_Spyglass_03
+## IconTexture: Interface\\Icons\\INV_Misc_Spyglass_03
 
 Locale.lua
 Core.lua
+RangeFix.lua
 SharedSettings.lua
 Profiles.lua
 Minimap.lua
